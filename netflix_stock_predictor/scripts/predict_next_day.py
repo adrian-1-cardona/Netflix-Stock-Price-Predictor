@@ -124,12 +124,14 @@ def main():
     
     # Calculate expected price change
     current_close = processed_data['Close'].iloc[-1]
+    last_data_date = processed_data.index[-1]
     predicted_close = predictions['close']['prediction']
     price_change = predicted_close - current_close
     price_change_pct = (price_change / current_close) * 100
     
     print(f"\n{'-'*60}")
-    print(f"Current Close:     {format_price(current_close)}")
+    print(f"Last Known Close:  {format_price(current_close)}")
+    print(f"Data as of:        {last_data_date.strftime('%B %d, %Y')}")
     print(f"Expected Change:   {format_price(price_change)} ({price_change_pct:+.2f}%)")
     
     # Overall model confidence (average of all three predictions)
@@ -138,6 +140,14 @@ def main():
                      predictions['close']['confidence']) / 3
     
     print(f"\nOverall Model Confidence: {avg_confidence:.1f}%")
+    
+    # Check data freshness
+    from datetime import datetime, timedelta
+    days_old = (datetime.now(pytz.timezone('US/Eastern')) - last_data_date).days
+    
+    if days_old > 7:
+        print(f"\n⚠️  WARNING: Data is {days_old} days old!")
+        print(f"   Predictions may be inaccurate. Please update with recent data.")
     
     # Interpretation
     if avg_confidence >= 90:
