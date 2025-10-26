@@ -21,42 +21,35 @@ class DataLoader:
     def load_stock_history(self) -> pd.DataFrame:
         """Load and process historical stock price data."""
         df = pd.read_csv(self.data_dir / 'Netflix_stock_history.csv')
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], utc=True)
         df.set_index('Date', inplace=True)
         return df
     
     def load_stock_splits(self) -> pd.DataFrame:
         """Load stock split events."""
         df = pd.read_csv(self.data_dir / 'Netflix_stock_spilts.csv')
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], utc=True)
+        df['SplitRatio'] = df['Stock Splits']  # Column is named 'Stock Splits' in the file
         df.set_index('Date', inplace=True)
         return df
     
     def load_stock_actions(self) -> pd.DataFrame:
         """Load corporate actions data."""
         df = pd.read_csv(self.data_dir / 'Netflix_stock_action.csv')
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], utc=True)
         df.set_index('Date', inplace=True)
         return df
     
     def load_stock_info(self) -> pd.DataFrame:
         """Load company information and metrics."""
-        try:
-            df = pd.read_csv(self.data_dir / 'Netflix_stock_info.csv')
-            # If the file doesn't have date information, we'll return an empty DataFrame
-            if 'Date' not in df.columns:
-                return pd.DataFrame()
-            df['Date'] = pd.to_datetime(df['Date'])
-            df.set_index('Date', inplace=True)
-            return df
-        except Exception as e:
-            print(f"Warning: Could not load stock info: {str(e)}")
-            return pd.DataFrame()
+        # The info CSV doesn't have time series data, so we don't need to process it
+        # We'll handle it differently in merge_all_data
+        return pd.DataFrame()
     
     def load_stock_dividends(self) -> pd.DataFrame:
         """Load dividend events."""
         df = pd.read_csv(self.data_dir / 'Netflix_stock_dividends.csv')
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], utc=True)
         df.set_index('Date', inplace=True)
         return df
     
@@ -73,6 +66,9 @@ class DataLoader:
         """
         adjusted_df = df.copy()
         
+        if splits.empty:
+            return adjusted_df
+            
         # Apply split adjustments from newest to oldest
         for date, row in splits.sort_index(ascending=False).iterrows():
             split_ratio = row['SplitRatio']
@@ -92,34 +88,16 @@ class DataLoader:
         Returns:
             pd.DataFrame: Complete merged dataset
         """
-        # Load all data sources
-        history_df = self.load_stock_history()
+        # Load historical price data
+        merged_df = self.load_stock_history()
+        
+        # Load and apply splits
         splits_df = self.load_stock_splits()
-        actions_df = self.load_stock_actions()
-        info_df = self.load_stock_info()
-        dividends_df = self.load_stock_dividends()
+        if not splits_df.empty:
+            merged_df = self.adjust_for_splits(merged_df, splits_df)
         
-        # Adjust historical prices for splits
-        adjusted_history = self.adjust_for_splits(history_df, splits_df)
-        
-        # Merge with other data sources
-        merged_df = adjusted_history.copy()
-        
-        # Add corporate actions
-        if not actions_df.empty:
-            merged_df = merged_df.join(actions_df, how='left')
-            
-        # Add company info
-        if not info_df.empty:
-            merged_df = merged_df.join(info_df, how='left')
-            
-        # Add dividend information
-        if not dividends_df.empty:
-            merged_df = merged_df.join(dividends_df, how='left')
-        
-        # Forward fill missing values for company info
-        info_columns = info_df.columns if not info_df.empty else []
-        merged_df[info_columns] = merged_df[info_columns].ffill()
+        # We already have dividends and splits in the history file
+        # No need to merge actions_df or dividends_df as they contain the same information
         
         return merged_df
     
