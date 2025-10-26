@@ -137,7 +137,163 @@ This will:
 
 ## 🎯 Running the Project
 
-### Make Predictions for Next Trading Day
+### Interactive Web Dashboard (Recommended)
+
+Launch the comprehensive analytics dashboard with a professional dark medical-report theme:
+
+```bash
+streamlit run app.py
+```
+
+The dashboard opens automatically in your browser at **http://localhost:8501**
+
+#### Dashboard Overview
+
+The dashboard features a sleek dark navy interface (#0a0e27 background) with interactive cards, real-time calculations, and professional data visualizations. All metrics are calculated from actual stock data—no placeholders!
+
+#### Key Sections & Features
+
+**1. Header Stats Bar (Top)**
+Four real-time metric cards:
+- **Current Stock Price**: Live price from latest data ($929.82)
+- **Next Day Prediction**: ML model's next-day closing prediction
+- **Data Age**: Days since last data update (with freshness warning)
+- **Model Confidence**: Prediction reliability percentage (95%+)
+
+**2. Main Dashboard Layout**
+
+**Left Column - Statistics Overview:**
+- **30-Day Price Trend**: Interactive line chart showing recent price movements
+- **Hover over the chart** to see exact values for any date
+- Smooth gradient visualization with dynamic scaling
+
+**Right Column - Key Metrics Panel:**
+Real-time calculated metrics (hover to highlight):
+- **7-Day Change**: Week-over-week price difference with percentage
+- **Market Cap**: Current valuation (price × 440M outstanding shares)
+- **52-Week Range**: Animated gradient bar showing current price position
+- **YoY Change**: Year-over-year performance percentage
+- **Average Volume**: 30-day trading volume average
+- **Volatility**: Price standard deviation (risk indicator)
+- **RSI**: Relative Strength Index for momentum (overbought/oversold signals)
+- **20/50-Day MAs**: Short and medium-term moving averages
+
+**3. Next Day Predictions (Three Cards)**
+ML model predictions with confidence intervals:
+- **OPEN**: Opening price prediction (blue accent)
+- **HIGH**: Intraday high prediction (green accent)
+- **CLOSE**: Closing price prediction (purple accent)
+
+Each card shows:
+- Central prediction value
+- Confidence interval range (±$X.XX)
+- Visual color-coded indicators
+- **Hover effect**: Cards lift and glow with colored shadows
+
+**4. Market Analysis Section**
+Four performance metric cards (hover to scale):
+- **Average Daily Return**: Mean percentage change per day
+- **Win Rate**: Percentage of positive trading days
+- **Best Day**: Largest single-day gain with date
+- **Worst Day**: Largest single-day loss with date
+
+**5. Volume Analysis Section**
+- **30-Day Volume Trend**: Interactive chart showing trading activity
+- **Current Volume**: Latest trading volume
+- **30-Day Statistics**: Average, highest, and lowest volume days
+
+**6. Technical Indicators Panel**
+Six key technical metrics in two rows:
+- **52W High/Low**: Year's price extremes
+- **20-Day MA / 50-Day MA**: Short and medium-term averages
+- **RSI**: Momentum indicator (14-day)
+- **Volatility**: Price standard deviation percentage
+
+#### Interactive Features
+
+**Hover Effects:**
+- **Prediction Cards**: Lift animation (translateY -5px) with colored glowing shadows
+- **Metric Rows**: Subtle background highlight on hover
+- **Analysis Cards**: Scale animation (1.05x) with shadow depth
+- **Chart Points**: Tooltip shows exact price and date
+
+**Refresh Button:**
+- Click "Refresh Data" in the sidebar to reload calculations
+- Dashboard automatically updates when `app.py` changes
+
+#### Understanding the Predictions
+
+**Confidence Intervals:**
+- Shows the range where the actual price is 95% likely to fall
+- Narrower range = higher confidence
+- Example: "$523.48 (± $12.34)" means prediction is $523.48, actual price likely between $511.14 and $535.82
+
+**Data Freshness Warning:**
+- Red warning badge appears if data is >30 days old
+- Predictions become less reliable with stale data
+- Consider updating `Netflix_stock_history.csv` with recent data
+
+**Model Performance:**
+- R² scores of 0.94-0.96 indicate excellent model fit
+- RMSE of $10-15 means average error is 2-3% of stock price
+- Three separate models for open/high/close prices
+
+#### Customization Options
+
+**Modify Dashboard Theme:**
+Edit CSS in `app.py` (lines 50-250):
+```python
+background-color: #0a0e27;  # Main background
+color: #3b82f6;              # Primary accent (blue)
+```
+
+**Adjust Confidence Level:**
+Edit `model_pipeline.py`:
+```python
+confidence = 0.90  # Change from 0.95 to 90% confidence
+```
+
+**Add New Charts:**
+Use Plotly for consistency:
+```python
+import plotly.graph_objects as go
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=dates, y=prices))
+st.plotly_chart(fig)
+```
+
+#### Troubleshooting
+
+**Dashboard won't start:**
+```bash
+# Check if Streamlit is installed
+pip show streamlit
+
+# Reinstall if needed
+pip install streamlit==1.50.0
+```
+
+**"No module named 'src'":**
+```bash
+# Make sure you're in the project root directory
+cd netflix_stock_predictor
+python -m streamlit run app.py
+```
+
+**Charts not displaying:**
+```bash
+# Install visualization dependencies
+pip install plotly==6.3.1 matplotlib==3.10.7
+```
+
+**Data warnings appearing:**
+- Dashboard shows red warning if data is >30 days old
+- Update `data/Netflix_stock_history.csv` with recent data
+- Retrain models: `python src/model_pipeline.py`
+
+### Command-Line Predictions
+
+For quick predictions without the dashboard:
 
 ```bash
 python scripts/predict_next_day.py
@@ -145,9 +301,9 @@ python scripts/predict_next_day.py
 
 **Output includes:**
 - Next trading day date
-- Predicted opening price
-- Predicted intraday high
-- Predicted closing price
+- Predicted opening, high, and closing prices
+- Confidence intervals (95%)
+- Data freshness warnings
 - Current closing price
 - Expected price change ($ and %)
 - Model performance metrics (RMSE, MAE, R²)

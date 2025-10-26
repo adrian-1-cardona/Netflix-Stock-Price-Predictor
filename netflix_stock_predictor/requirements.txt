@@ -19,3 +19,8 @@ notebook>=6.4.0
 
 # Statistics
 scipy>=1.7.0
+
+# Web dashboard
+streamlit>=1.28.0
+plotly>=5.17.0
+matplotlib>=3.5.0
