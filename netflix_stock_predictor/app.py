@@ -27,24 +27,30 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Modern Minimal Dark Theme (matching reference)
+# Custom CSS - Soft Cohesive Theme
 st.markdown("""
     <style>
-    /* Global Styles with animations */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Global Styles - Dark with Grey Gradient */
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    
     .main {
-        background-color: #0b0b1e;
-        padding: 0rem 1rem;
+        background: linear-gradient(180deg, #000000 0%, #1a1a1a 25%, #2d2d2d 50%, #1a1a1a 75%, #000000 100%);
+        padding: 0rem 1.5rem;
         animation: fadeIn 0.5s ease-in;
     }
     
     @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
     
     @keyframes slideInUp {
         from {
-            transform: translateY(20px);
+            transform: translateY(15px);
             opacity: 0;
         }
         to {
@@ -54,13 +60,14 @@ st.markdown("""
     }
     
     .stApp {
-        background-color: #0b0b1e;
+        background: linear-gradient(180deg, #000000 0%, #1a1a1a 25%, #2d2d2d 50%, #1a1a1a 75%, #000000 100%);
     }
     
-    /* Sidebar Styling with hover effects */
+    /* Sidebar - Dark Theme */
     section[data-testid="stSidebar"] {
-        background-color: #0b0b1e;
-        border-right: 1px solid #1f1f33;
+        background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+        border-right: 1px solid #333333;
+        box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
         transition: all 0.3s ease;
     }
     
@@ -68,274 +75,250 @@ st.markdown("""
         color: #ffffff;
         font-size: 1.25rem;
         font-weight: 600;
-        padding: 0.5rem 0;
+        padding: 0.75rem 0;
+        letter-spacing: -0.01em;
     }
     
     section[data-testid="stSidebar"] .stMarkdown {
-        color: #fff;
+        color: #b0b0b0;
     }
     
     /* Remove default padding */
     .block-container {
         padding-top: 2rem;
-        padding-bottom: 2rem;
-        animation: slideInUp 0.5s ease-out;
+        padding-bottom: 3rem;
+        animation: slideInUp 0.5s ease;
+        max-width: 1400px;
+        margin: 0 auto;
     }
     
-    /* Buttons with enhanced interactions */
+    /* Buttons - Professional */
     .stButton button {
-        background-color: #1a1a2e;
+        background-color: #111827;
         color: #ffffff;
-        border: 1px solid #2d2d44;
-        border-radius: 8px;
+        border: none;
+        border-radius: 4px;
         padding: 0.5rem 1.2rem;
-        font-size: 0.95rem;
+        font-size: 0.875rem;
         font-weight: 500;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
+        transition: all 0.2s ease;
+        letter-spacing: 0.025em;
+        text-transform: uppercase;
     }
     
     .stButton button:hover {
-        background-color: #232136;
-        border-color: #3a3a54;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+        background-color: #1f2937;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
     .stButton button:active {
         transform: translateY(0);
     }
     
-    /* Tabs with smooth transitions */
+    /* Tabs - Clean Lines */
     .stTabs [data-baseweb="tab-list"] {
         background-color: transparent;
-        border-bottom: 1px solid #2d2d44;
-        gap: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        gap: 2rem;
     }
     
     .stTabs [data-baseweb="tab"] {
         background-color: transparent;
-        color: #8b92b0;
+        color: #6b7280;
         border: none;
         font-weight: 500;
-        padding: 0.75rem 1.5rem;
-        transition: all 0.3s ease;
-        position: relative;
+        padding: 0.75rem 0;
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+        letter-spacing: 0.025em;
     }
     
     .stTabs [data-baseweb="tab"]:hover {
-        color: #ffffff;
-        transform: translateY(-2px);
+        color: #111827;
     }
     
     .stTabs [aria-selected="true"] {
         background-color: transparent !important;
-        color: #ffffff !important;
-        border-bottom: 2px solid #3b82f6 !important;
+        color: #111827 !important;
+        border-bottom: 2px solid #111827 !important;
+        font-weight: 600;
     }
     
-    .stTabs [aria-selected="true"]::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        animation: slideIn 0.3s ease-out;
-    }
-    
-    /* Headers with gradient effects */
+    /* Headers - Professional Typography */
     h1, h2, h3 {
-        color: #ffffff !important;
+        color: #111827 !important;
         font-weight: 600 !important;
         transition: all 0.3s ease;
+        letter-spacing: -0.025em;
     }
     
     h1 {
-        font-size: 1.4rem !important;
+        font-size: 1.875rem !important;
         margin-bottom: 0.5rem !important;
+        font-weight: 700 !important;
     }
     
     h2 {
-        font-size: 1.5rem !important;
+        font-size: 1.25rem !important;
         margin-top: 2rem !important;
-    }
-    
-    h2:hover {
-        transform: translateX(5px);
+        font-weight: 600 !important;
     }
     
     h3 {
-        font-size: 1.25rem !important;
-        color: #3b82f6 !important;
+        font-size: 1rem !important;
+        color: #374151 !important;
+        font-weight: 600 !important;
     }
     
-    /* Text */
+    /* Text - Readable */
     p, .stMarkdown {
-        color: #8b92b0;
+        color: #4b5563;
+        line-height: 1.6;
     }
     
-    /* Buttons gradient */
-    .stButton button {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 500;
-        box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    .stButton button:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-        box-shadow: 0 6px 8px rgba(59, 130, 246, 0.4);
-        transform: translateY(-2px) scale(1.02);
-    }
-    
-    .stButton button:active {
-        transform: translateY(0) scale(0.98);
-    }
-    
-    /* Info/Warning/Success boxes with animations */
+    /* Info/Warning/Success boxes */
     .stAlert {
-        background-color: #1a1f3a;
-        border: 1px solid #1e2749;
-        border-radius: 8px;
-        color: #ffffff;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        color: #111827;
         animation: slideInUp 0.4s ease-out;
     }
     
     /* Success */
     div[data-baseweb="notification"][kind="success"] {
-        background-color: rgba(34, 197, 94, 0.1);
-        border-left: 4px solid #22c55e;
+        background-color: #f0fdf4;
+        border-left: 3px solid #22c55e;
     }
     
     /* Info */
     div[data-baseweb="notification"][kind="info"] {
-        background-color: rgba(59, 130, 246, 0.1);
-        border-left: 4px solid #3b82f6;
+        background-color: #eff6ff;
+        border-left: 3px solid #3b82f6;
     }
     
     /* Warning */
     div[data-baseweb="notification"][kind="warning"] {
-        background-color: rgba(251, 191, 36, 0.1);
-        border-left: 4px solid #fbbf24;
+        background-color: #fffbeb;
+        border-left: 3px solid #f59e0b;
     }
     
     /* Error */
     div[data-baseweb="notification"][kind="error"] {
-        background-color: rgba(239, 68, 68, 0.1);
-        border-left: 4px solid #ef4444;
+        background-color: #fef2f2;
+        border-left: 3px solid #ef4444;
     }
     
-    /* Dataframes with hover effects */
+    /* Dataframes - Clean Tables */
     .stDataFrame {
-        background-color: #1a1f3a;
-        border: 1px solid #1e2749;
-        border-radius: 8px;
+        background-color: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
         transition: all 0.3s ease;
         animation: slideInUp 0.5s ease-out;
     }
     
     .stDataFrame:hover {
-        border-color: #3b82f6;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        border-color: #d1d5db;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     
-    /* Select boxes with focus effects */
+    /* Select boxes */
     .stSelectbox > div > div {
-        background-color: #1a1f3a;
-        border: 1px solid #1e2749;
-        color: #ffffff;
-        transition: all 0.3s ease;
+        background-color: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #111827;
+        transition: all 0.2s ease;
+        border-radius: 4px;
     }
     
     .stSelectbox > div > div:hover {
-        border-color: #3b82f6;
+        border-color: #9ca3af;
     }
     
     .stSelectbox > div > div:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        border-color: #111827;
+        box-shadow: 0 0 0 2px rgba(17, 24, 39, 0.1);
     }
     
     /* Divider */
     hr {
-        border-color: #1e2749;
-        margin: 2rem 0;
+        border-color: #e8eaed;
+        margin: 3rem 0;
+        border-width: 0;
+        border-top: 1px solid #e8eaed;
     }
     
     /* Caption text */
     .caption, small {
-        color: #6b7280 !important;
-        font-size: 0.875rem;
+        color: #8f95a3 !important;
+        font-size: 0.8125rem;
+        font-weight: 400;
     }
     
-    /* Prediction Cards with hover animation */
+    /* Prediction Cards - Soft Elevated */
     .prediction-card {
-        background: linear-gradient(135deg, #1a1f3a 0%, #0f1629 100%);
-        padding: 1.5rem;
-        border-radius: 12px;
-        border: 1px solid #1e2749;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        margin: 1rem 0;
-        transition: all 0.3s ease;
-        animation: slideInUp 0.5s ease-out;
+        background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        border: 1px solid #e8eaed;
+        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.06);
+        margin: 1.5rem 0;
+        transition: all 0.4s ease;
+        animation: slideInUp 0.4s ease-out;
     }
     
     .prediction-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-        border-color: #3b82f6;
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(99, 102, 241, 0.12);
+        border-color: #c7d2fe;
     }
     
-    /* Stats Card with hover animation */
+    /* Stats Card - Soft */
     .stats-card {
-        background: linear-gradient(135deg, #1a1f3a 0%, #0f1629 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
         padding: 2rem;
-        border-radius: 12px;
-        border: 1px solid #1e2749;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        animation: slideInUp 0.6s ease-out;
+        border-radius: 20px;
+        border: 1px solid #e8eaed;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+        animation: slideInUp 0.4s ease-out;
     }
     
     .stats-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
     
-    /* Loading spinner animation */
+    /* Loading spinner */
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
     
     .stSpinner > div {
-        border-color: #3b82f6 !important;
-        border-top-color: transparent !important;
+        border-color: #d1d5db !important;
+        border-top-color: #111827 !important;
         animation: spin 1s linear infinite;
-    };
-        padding: 2rem;
-        border-radius: 12px;
-        border: 1px solid #1e2749;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
     
-    /* Accent badges */
+    /* Accent badges - Subtle */
     .badge {
-        background-color: rgba(59, 130, 246, 0.2);
-        color: #3b82f6;
+        background-color: #f3f4f6;
+        color: #374151;
         padding: 0.25rem 0.75rem;
-        border-radius: 12px;
+        border-radius: 4px;
         font-size: 0.75rem;
         font-weight: 600;
         display: inline-block;
+        letter-spacing: 0.025em;
     }
+    
+    /* Remove default streamlit styling */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -541,26 +524,23 @@ def create_prediction_gauge(confidence):
     return fig
 
 def main():
-    # Sidebar with animations
+    # Sidebar - Professional Executive Style
     with st.sidebar:
         st.markdown("""
-<div style='padding: 0.5rem 0 2rem 0; animation: slideIn 0.5s ease-out;'>
-  <div style='display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem;'>
-    <div style='width: 35px; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);'></div>
-    <div style='font-size: 1.25rem; font-weight: bold; color: #fff; line-height: 1.3;'>Netflix Stock<br>Predictor</div>
-  </div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Dashboard</div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Update/Refresh Data</div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Historical Data</div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Analytics</div>
+<div style='padding: 0.5rem 0 2.5rem 0; border-bottom: 1px solid #e5e7eb; animation: slideIn 0.3s ease-out;'>
+  <div style='font-size: 0.75rem; font-weight: 600; color: #6b7280; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem;'>Quantitative Analysis</div>
+  <div style='font-size: 1.5rem; font-weight: 700; color: #111827; letter-spacing: -0.025em; line-height: 1.2;'>Netflix<br/>Stock Predictor</div>
+</div>
+<div style='padding: 1.5rem 0 1rem 0;'>
+  <div style='font-size: 0.75rem; font-weight: 600; color: #6b7280; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;'>Navigation</div>
+  <div style='font-size: 0.875rem; color: #374151; margin-bottom: 0.75rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 4px; transition: all 0.2s ease; border-left: 2px solid transparent; font-weight: 500;' onmouseover="this.style.background='#f9fafb'; this.style.borderLeftColor='#111827'; this.style.color='#111827'" onmouseout="this.style.background='transparent'; this.style.borderLeftColor='transparent'; this.style.color='#374151'">Overview</div>
+  <div style='font-size: 0.875rem; color: #374151; margin-bottom: 0.75rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 4px; transition: all 0.2s ease; border-left: 2px solid transparent; font-weight: 500;' onmouseover="this.style.background='#f9fafb'; this.style.borderLeftColor='#111827'; this.style.color='#111827'" onmouseout="this.style.background='transparent'; this.style.borderLeftColor='transparent'; this.style.color='#374151'">Data Refresh</div>
+  <div style='font-size: 0.875rem; color: #374151; margin-bottom: 0.75rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 4px; transition: all 0.2s ease; border-left: 2px solid transparent; font-weight: 500;' onmouseover="this.style.background='#f9fafb'; this.style.borderLeftColor='#111827'; this.style.color='#111827'" onmouseout="this.style.background='transparent'; this.style.borderLeftColor='transparent'; this.style.color='#374151'">Historical Analysis</div>
+  <div style='font-size: 0.875rem; color: #374151; margin-bottom: 0.75rem; cursor: pointer; padding: 0.5rem 0.75rem; border-radius: 4px; transition: all 0.2s ease; border-left: 2px solid transparent; font-weight: 500;' onmouseover="this.style.background='#f9fafb'; this.style.borderLeftColor='#111827'; this.style.color='#111827'" onmouseout="this.style.background='transparent'; this.style.borderLeftColor='transparent'; this.style.color='#374151'">Predictive Models</div>
 </div>
 <style>
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.9; }
-}
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-10px); }
+    from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
 }
 </style>
@@ -577,38 +557,20 @@ def main():
             st.cache_resource.clear()
             st.rerun()
     
-    # Header with Export/Import buttons with enhanced animations
+    # Header - Dark Theme with White Text
     st.markdown("""
-<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; animation: fadeIn 0.6s ease-out;'>
-  <div style='font-size: 1.4rem; font-weight: 600; color: #fff;'>
-    <span style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>Report & Analytics</span>
-  </div>
+<div style='text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #333333; animation: fadeIn 0.6s ease-out;'>
+  <div style='font-size: 0.875rem; font-weight: 500; color: #b0b0b0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem;'>Netflix Stock Analysis</div>
+  <div style='font-size: 2.5rem; font-weight: 700; color: #ffffff; letter-spacing: -0.02em;'>Portfolio Dashboard</div>
+  <div style='font-size: 1rem; font-weight: 400; color: #b0b0b0; margin-top: 0.5rem;'>Real-time predictions and market insights</div>
 </div>
 <style>
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
+    from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 </style>
     """, unsafe_allow_html=True)
-    
-    col_btn1, col_btn2, col_spacer = st.columns([1, 1, 8])
-    with col_btn1:
-        st.markdown("""
-        <button style='width: 100%; padding: 0.6rem 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);'
-                onmouseover="this.style.transform='translateY(-3px) scale(1.02)'; this.style.boxShadow='0 8px 15px rgba(102, 126, 234, 0.4)'; this.style.background='linear-gradient(135deg, #764ba2 0%, #667eea 100%)'"
-                onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)'; this.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">
-            Export
-        </button>
-        """, unsafe_allow_html=True)
-    with col_btn2:
-        st.markdown("""
-        <button style='width: 100%; padding: 0.6rem 1rem; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);'
-                onmouseover="this.style.transform='translateY(-3px) scale(1.02)'; this.style.boxShadow='0 8px 15px rgba(245, 87, 108, 0.4)'; this.style.background='linear-gradient(135deg, #f5576c 0%, #f093fb 100%)'"
-                onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)'; this.style.background='linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'">
-            Import
-        </button>
-        """, unsafe_allow_html=True)
     
     # Load data and model
     try:
@@ -660,36 +622,36 @@ def main():
         }
         avg_confidence = 0
     
-    # Top metrics cards (interactive with hover effects and gradient backgrounds)
+    # Top metrics cards - Dark Theme with White Text
     st.markdown(f"""
-<div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #1a1a2e 0%, #16162a 100%); border: 1px solid #2d2d44; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border: 1px solid rgba(102, 126, 234, 0.2);' 
-       onmouseover="this.style.background='linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.3)'"
-       onmouseout="this.style.background='linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>DASHBOARD</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{len(data)}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)' if change_7d >= 0 else 'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)'}; color: {'#22c55e' if change_7d >= 0 else '#ef4444'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{change_7d:+.1f}%</span></div>
+<div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2.5rem;'>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1.75rem; border-radius: 8px; background: #1a1a1a; border: 1px solid #333333; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);' 
+       onmouseover="this.style.boxShadow='0 4px 12px rgba(255, 255, 255, 0.1)'; this.style.borderColor='#444444'"
+       onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.3)'; this.style.borderColor='#333333'">
+    <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.75rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;'>Data Points</div>
+    <div style='color: #ffffff; font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.01em; line-height: 1;'>{len(data)}</div>
+    <div style='color: #e0e0e0; font-size: 0.75rem; font-weight: 400;'>7-Day <span style='background: {'#2a2a2a' if change_7d >= 0 else '#262626'}; color: {'#b0b0b0' if change_7d >= 0 else '#a0a0a0'}; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 500;'>{change_7d:+.1f}%</span></div>
   </div>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(34, 197, 94, 0.2);'
-       onmouseover="this.style.background='linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(34, 197, 94, 0.3)'"
-       onmouseout="this.style.background='linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>ANALYTICS</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #22c55e 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{int(current_volume / 1000)}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)' if volume_change >= 0 else 'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)'}; color: {'#22c55e' if volume_change >= 0 else '#ef4444'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{volume_change:+.1f}%</span></div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1.75rem; border-radius: 8px; background: #1a1a1a; border: 1px solid #333333; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);'
+       onmouseover="this.style.boxShadow='0 4px 12px rgba(255, 255, 255, 0.1)'; this.style.borderColor='#444444'"
+       onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.3)'; this.style.borderColor='#333333'">
+    <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.75rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;'>Volume (K)</div>
+    <div style='color: #ffffff; font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.01em; line-height: 1;'>{int(current_volume / 1000)}</div>
+    <div style='color: #e0e0e0; font-size: 0.75rem; font-weight: 400;'>Chg <span style='background: {'#2a2a2a' if volume_change >= 0 else '#262626'}; color: {'#b0b0b0' if volume_change >= 0 else '#a0a0a0'}; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 500;'>{volume_change:+.1f}%</span></div>
   </div>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(240, 147, 251, 0.05) 0%, rgba(245, 87, 108, 0.05) 100%); border: 1px solid rgba(240, 147, 251, 0.2);'
-       onmouseover="this.style.background='linear-gradient(135deg, rgba(240, 147, 251, 0.15) 0%, rgba(245, 87, 108, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(240, 147, 251, 0.3)'"
-       onmouseout="this.style.background='linear-gradient(135deg, rgba(240, 147, 251, 0.05) 0%, rgba(245, 87, 108, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>DATA FRESHNESS</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{last_date.strftime('%b %d')}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)' if days_old > 3 else 'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)'}; color: {'#ef4444' if days_old > 3 else '#22c55e'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{days_old} days</span></div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1.75rem; border-radius: 8px; background: #1a1a1a; border: 1px solid #333333; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);'
+       onmouseover="this.style.boxShadow='0 4px 12px rgba(255, 255, 255, 0.1)'; this.style.borderColor='#444444'"
+       onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.3)'; this.style.borderColor='#333333'">
+    <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.75rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;'>Last Updated</div>
+    <div style='color: #ffffff; font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.01em; line-height: 1;'>{last_date.strftime('%b %d')}</div>
+    <div style='color: #e0e0e0; font-size: 0.75rem; font-weight: 400;'>Age <span style='background: {'#262626' if days_old > 3 else '#2a2a2a'}; color: {'#a0a0a0' if days_old > 3 else '#b0b0b0'}; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 500;'>{days_old}d</span></div>
   </div>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%); border: 1px solid rgba(251, 191, 36, 0.2);'
-       onmouseover="this.style.background='linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(251, 191, 36, 0.3)'"
-       onmouseout="this.style.background='linear-gradient(135deg, rgba(251, 191, 36, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>MODEL ACCURACY</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{avg_confidence:.0f}%</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>R² Score <span style='background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%); color: #22c55e; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>0.95</span></div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1.75rem; border-radius: 8px; background: #1a1a1a; border: 1px solid #333333; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);'
+       onmouseover="this.style.boxShadow='0 4px 12px rgba(255, 255, 255, 0.1)'; this.style.borderColor='#444444'"
+       onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.3)'; this.style.borderColor='#333333'">
+    <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.75rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;'>Confidence</div>
+    <div style='color: #ffffff; font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.01em; line-height: 1;'>{avg_confidence:.0f}%</div>
+    <div style='color: #e0e0e0; font-size: 0.75rem; font-weight: 400;'>R² <span style='background: #2a2a2a; color: #b0b0b0; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 500;'>0.95</span></div>
   </div>
 </div>
     """, unsafe_allow_html=True)
@@ -825,13 +787,13 @@ def main():
     with col_left:
         # Statistics Overview Chart
         st.markdown("""
-<div style='padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px; margin-bottom: 1.5rem;'>
+<div style='padding: 1.25rem; background: #1a1a1a; border: 1px solid #333333; border-radius: 8px; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);'>
   <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;'>
-    <div style='font-size: 1rem; font-weight: 600; color: #fff;'>Statics Overview</div>
-    <div style='display: flex; gap: 1.5rem; align-items: center;'>
-      <span style='color: #3b82f6; font-size: 0.85rem;'>● High</span>
-      <span style='color: #fff; font-size: 0.85rem;'>● Close</span>
-      <button style='background: #232136; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 0.4rem 0.9rem; font-size: 0.85rem; cursor: pointer;'>6 Month</button>
+    <div style='font-size: 1rem; font-weight: 500; color: #ffffff;'>Statistics Overview</div>
+    <div style='display: flex; gap: 1.25rem; align-items: center;'>
+      <span style='color: #b0b0b0; font-size: 0.8125rem; font-weight: 400;'>● High</span>
+      <span style='color: #e0e0e0; font-size: 0.8125rem; font-weight: 400;'>● Close</span>
+      <span style='background: #262626; color: #b0b0b0; border: 1px solid #333333; border-radius: 4px; padding: 0.4rem 0.9rem; font-size: 0.8125rem; font-weight: 400;'>6 Month</span>
     </div>
   </div>
 </div>
@@ -846,8 +808,8 @@ def main():
     with col_right:
         # Historical Data Card
         st.markdown("""
-<div style='padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
-  <div style='font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 1.5rem;'>Historical Data</div>
+<div style='padding: 1.5rem; background: #1a1a1a; border: 1px solid #333333; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);'>
+  <div style='font-size: 0.8125rem; font-weight: 500; color: #b0b0b0; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase;'>Historical Data</div>
 </div>
         """, unsafe_allow_html=True)
         
@@ -882,60 +844,157 @@ def main():
         pred_open = predictions['open']['prediction']
         
         st.markdown(f"""
-<div style='padding: 1.5rem; background: linear-gradient(135deg, #1a1a2e 0%, #16162a 100%); border: 1px solid #2d2d44; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'>
-  <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>TOTAL MARKET CAP</div>
-  <div style='color: #fff; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>${market_cap / 1_000_000_000:.2f}B</div>
-  <div style='color: #6b7280; font-size: 0.75rem; margin-bottom: 1rem;'><span style='background: {'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)' if yoy_change >= 0 else 'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)'}; color: {'#22c55e' if yoy_change >= 0 else '#ef4444'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{yoy_change:+.1f}%</span> YoY</div>
+<div style='padding: 1.5rem; background: #1a1a1a; border: 1px solid #333333; border-radius: 8px; margin-top: 1.25rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);'>
+  <div style='color: #b0b0b0; font-size: 0.8125rem; margin-bottom: 0.6rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;'>Total Market Cap</div>
+  <div style='color: #ffffff; font-size: 2rem; font-weight: 600; margin-bottom: 0.4rem; letter-spacing: -0.01em;'>${market_cap / 1_000_000_000:.2f}B</div>
+  <div style='color: #b0b0b0; font-size: 0.8125rem; margin-bottom: 1.5rem; font-weight: 400;'><span style='background: #262626; color: #a0a0a0; padding: 0.2rem 0.6rem; border-radius: 4px; font-weight: 500;'>{yoy_change:+.1f}%</span> YoY</div>
   
-  <div style='width: 100%; height: 30px; display: flex; border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);'
-       onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)'"
-       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.2)'">
-    <div style='background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); width: 25%; transition: all 0.3s ease;' title='Current Price: ${last_close:,.2f}'></div>
-    <div style='background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); width: 25%; transition: all 0.3s ease;' title='52W High: ${high_52w:,.2f}'></div>
-    <div style='background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); width: 15%; transition: all 0.3s ease;' title='Predictions: ${pred_close:,.2f}'></div>
-    <div style='background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); width: 10%; transition: all 0.3s ease;' title='Volume: {avg_vol_30d / 1_000_000:.1f}M'></div>
-    <div style='background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 25%; transition: all 0.3s ease;' title='Market Cap: ${market_cap / 1_000_000_000:.2f}B'></div>
+  <div style='width: 100%; height: 28px; display: flex; border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid #333333;'>
+    <div style='background: #5a5a5a; width: 25%;' title='Current Price: ${last_close:,.2f}'></div>
+    <div style='background: #6a6a6a; width: 25%;' title='52W High: ${high_52w:,.2f}'></div>
+    <div style='background: #7a7a7a; width: 15%;' title='Predictions: ${pred_close:,.2f}'></div>
+    <div style='background: #8a8a8a; width: 10%;' title='Volume: {avg_vol_30d / 1_000_000:.1f}M'></div>
+    <div style='background: #9a9a9a; width: 25%;' title='Market Cap: ${market_cap / 1_000_000_000:.2f}B'></div>
   </div>
   
-  <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;'>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1);'
-         onmouseover="this.style.background='rgba(59, 130, 246, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(59, 130, 246, 0.3)'"
-         onmouseout="this.style.background='rgba(59, 130, 246, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(59, 130, 246, 0.1)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>Current Price</div>
-      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${last_close:,.2f}</div>
+  <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; margin-bottom: 0.875rem;'>
+    <div style='padding: 0.875rem; border-radius: 6px; background: #262626; border: 1px solid #333333;'>
+      <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.3rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;'>Current Price</div>
+      <div style='color: #ffffff; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;'>${last_close:,.2f}</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(34, 211, 238, 0.05); border: 1px solid rgba(34, 211, 238, 0.1);'
-         onmouseover="this.style.background='rgba(34, 211, 238, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(34, 211, 238, 0.3)'"
-         onmouseout="this.style.background='rgba(34, 211, 238, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(34, 211, 238, 0.1)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>52W High</div>
-      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${high_52w:,.2f}</div>
+    <div style='padding: 0.875rem; border-radius: 6px; background: #262626; border: 1px solid #333333;'>
+      <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.3rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;'>52W High</div>
+      <div style='color: #ffffff; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;'>${high_52w:,.2f}</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.1);'
-         onmouseover="this.style.background='rgba(168, 85, 247, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(168, 85, 247, 0.3)'"
-         onmouseout="this.style.background='rgba(168, 85, 247, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(168, 85, 247, 0.1)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>Pred. Close</div>
-      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${pred_close:,.2f}</div>
+    <div style='padding: 0.875rem; border-radius: 6px; background: #262626; border: 1px solid #333333;'>
+      <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.3rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;'>Pred. Close</div>
+      <div style='color: #ffffff; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;'>${pred_close:,.2f}</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.1);'
-         onmouseover="this.style.background='rgba(249, 115, 22, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(249, 115, 22, 0.3)'"
-         onmouseout="this.style.background='rgba(249, 115, 22, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(249, 115, 22, 0.1)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>Avg Volume</div>
-      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>{avg_vol_30d / 1_000_000:.1f}M</div>
+    <div style='padding: 0.875rem; border-radius: 6px; background: #262626; border: 1px solid #333333;'>
+      <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.3rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;'>Avg Volume</div>
+      <div style='color: #ffffff; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;'>{avg_vol_30d / 1_000_000:.1f}M</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1);'
-         onmouseover="this.style.background='rgba(34, 197, 94, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(34, 197, 94, 0.3)'"
-         onmouseout="this.style.background='rgba(34, 197, 94, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(34, 197, 94, 0.1)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>52W Low</div>
-      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${low_52w:,.2f}</div>
+    <div style='padding: 0.875rem; border-radius: 6px; background: #262626; border: 1px solid #333333;'>
+      <div style='color: #b0b0b0; font-size: 0.7rem; margin-bottom: 0.3rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;'>52W Low</div>
+      <div style='color: #ffffff; font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;'>${low_52w:,.2f}</div>
     </div>
   </div>
 </div>
 """, unsafe_allow_html=True)
     
+    # Additional Visualizations Section
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Price Movement Distribution
+    col_chart1, col_chart2 = st.columns(2, gap="large")
+    
+    with col_chart1:
+        st.markdown("""
+<div style='background: #1a1a1a; padding: 1.5rem; border-radius: 8px; border: 1px solid #333333; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); margin-bottom: 2rem;'>
+  <div style='color: #b0b0b0; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem;'>Price Distribution</div>
+</div>
+        """, unsafe_allow_html=True)
+        
+        # Create distribution chart
+        daily_changes = data['Close'].pct_change().dropna() * 100
+        dist_fig = go.Figure()
+        dist_fig.add_trace(go.Histogram(
+            x=daily_changes,
+            nbinsx=50,
+            marker_color='rgba(158, 158, 158, 0.6)',
+            marker_line_color='rgba(117, 117, 117, 1)',
+            marker_line_width=1,
+            name='Daily Changes'
+        ))
+        dist_fig.update_layout(
+            title='Daily Price Change Distribution',
+            xaxis_title='Daily Change (%)',
+            yaxis_title='Frequency',
+            plot_bgcolor='#1a1a1a',
+            paper_bgcolor='#1a1a1a',
+            font=dict(color='#b0b0b0', size=12),
+            height=350,
+            margin=dict(l=20, r=20, t=40, b=20)
+        )
+        st.plotly_chart(dist_fig, use_container_width=True)
+    
+    with col_chart2:
+        st.markdown("""
+<div style='background: #1a1a1a; padding: 1.5rem; border-radius: 8px; border: 1px solid #333333; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); margin-bottom: 2rem;'>
+  <div style='color: #b0b0b0; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem;'>Volume Trends</div>
+</div>
+        """, unsafe_allow_html=True)
+        
+        # Create volume trend chart
+        recent_vol = data.tail(60)
+        vol_fig = go.Figure()
+        vol_fig.add_trace(go.Bar(
+            x=recent_vol.index,
+            y=recent_vol['Volume'],
+            marker_color='rgba(189, 189, 189, 0.6)',
+            marker_line_color='rgba(158, 158, 158, 1)',
+            marker_line_width=1,
+            name='Volume'
+        ))
+        vol_fig.update_layout(
+            title='Volume Trend (Last 60 Days)',
+            xaxis_title='Date',
+            yaxis_title='Volume',
+            plot_bgcolor='#1a1a1a',
+            paper_bgcolor='#1a1a1a',
+            font=dict(color='#b0b0b0', size=12),
+            height=350,
+            margin=dict(l=20, r=20, t=40, b=20)
+        )
+        st.plotly_chart(vol_fig, use_container_width=True)
+    
+    # Moving Averages Comparison
+    st.markdown("""
+<div style='background: #1a1a1a; padding: 1.5rem; border-radius: 8px; border: 1px solid #333333; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); margin-bottom: 2rem;'>
+  <div style='color: #b0b0b0; font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem;'>Moving Averages Analysis</div>
+</div>
+    """, unsafe_allow_html=True)
+    
+    # Create moving averages chart
+    ma_data = data.tail(180).copy()
+    ma_data['MA20'] = ma_data['Close'].rolling(window=20).mean()
+    ma_data['MA50'] = ma_data['Close'].rolling(window=50).mean()
+    
+    ma_fig = go.Figure()
+    ma_fig.add_trace(go.Scatter(
+        x=ma_data.index, y=ma_data['Close'],
+        mode='lines', name='Close Price',
+        line=dict(color='rgba(117, 117, 117, 0.8)', width=2)
+    ))
+    ma_fig.add_trace(go.Scatter(
+        x=ma_data.index, y=ma_data['MA20'],
+        mode='lines', name='20-Day MA',
+        line=dict(color='rgba(158, 158, 158, 0.6)', width=2, dash='dash')
+    ))
+    ma_fig.add_trace(go.Scatter(
+        x=ma_data.index, y=ma_data['MA50'],
+        mode='lines', name='50-Day MA',
+        line=dict(color='rgba(189, 189, 189, 0.6)', width=2, dash='dot')
+    ))
+    ma_fig.update_layout(
+        title='Price with Moving Averages (180 Days)',
+        xaxis_title='Date',
+        yaxis_title='Price ($)',
+        plot_bgcolor='#1a1a1a',
+        paper_bgcolor='#1a1a1a',
+        font=dict(color='#b0b0b0', size=12),
+        height=400,
+        margin=dict(l=20, r=20, t=40, b=20),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+    st.plotly_chart(ma_fig, use_container_width=True)
+    
     # Predictions Section
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown("""
-        <h2 style='color: #ffffff; margin-bottom: 1.5rem;'>Next Trading Day Predictions</h2>
+        <div style='text-align: center; margin-bottom: 2rem;'>
+            <div style='font-size: 1.75rem; font-weight: 600; color: #1a1a1a;'>Next Trading Day Predictions</div>
+        </div>
     """, unsafe_allow_html=True)
     
     try:
