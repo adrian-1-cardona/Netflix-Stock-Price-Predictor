@@ -564,28 +564,36 @@ def main():
         }
         avg_confidence = 0
     
-    # Top metrics cards (flat, modern design with real data)
+    # Top metrics cards (interactive with hover effects)
     st.markdown(f"""
 <div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
-  <div>
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Dashboard</div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;' 
+       onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>📊 Dashboard</div>
     <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{len(data)}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{change_7d:+.1f}%</span></div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'rgba(34, 197, 94, 0.2)' if change_7d >= 0 else 'rgba(239, 68, 68, 0.2)'}; color: {'#22c55e' if change_7d >= 0 else '#ef4444'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{change_7d:+.1f}%</span></div>
   </div>
-  <div>
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Analytics</div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;'
+       onmouseover="this.style.background='rgba(34, 197, 94, 0.1)'; this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>📈 Analytics</div>
     <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{int(current_volume / 1000)}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{volume_change:+.1f}%</span></div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'rgba(34, 197, 94, 0.2)' if volume_change >= 0 else 'rgba(239, 68, 68, 0.2)'}; color: {'#22c55e' if volume_change >= 0 else '#ef4444'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{volume_change:+.1f}%</span></div>
   </div>
-  <div>
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Data Last Freshed</div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;'
+       onmouseover="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>📅 Data Last Freshed</div>
     <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{last_date.strftime('%b %d')}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{days_old} days</span></div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'rgba(239, 68, 68, 0.2)' if days_old > 3 else 'rgba(34, 197, 94, 0.2)'}; color: {'#ef4444' if days_old > 3 else '#22c55e'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{days_old} days</span></div>
   </div>
-  <div>
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Model Accuracy Percentage</div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;'
+       onmouseover="this.style.background='rgba(251, 191, 36, 0.1)'; this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>🎯 Model Accuracy</div>
     <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{avg_confidence:.0f}%</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>R² 0.95</span></div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>R² Score <span style='background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>0.95</span></div>
   </div>
 </div>
     """, unsafe_allow_html=True)
@@ -779,36 +787,48 @@ def main():
         
         st.markdown(f"""
 <div style='padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
-  <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Total Market Cap</div>
+  <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>💰 Total Market Cap</div>
   <div style='color: #fff; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;'>${market_cap / 1_000_000_000:.2f}B</div>
-  <div style='color: #6b7280; font-size: 0.75rem; margin-bottom: 1rem;'><span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{yoy_change:+.1f}%</span></div>
+  <div style='color: #6b7280; font-size: 0.75rem; margin-bottom: 1rem;'><span style='background: {'rgba(34, 197, 94, 0.2)' if yoy_change >= 0 else 'rgba(239, 68, 68, 0.2)'}; color: {'#22c55e' if yoy_change >= 0 else '#ef4444'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{yoy_change:+.1f}%</span> YoY</div>
   
-  <div style='width: 100%; height: 30px; display: flex; border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem;'>
-    <div style='background: #3b82f6; width: 25%;' title='Current Price'></div>
-    <div style='background: #22d3ee; width: 25%;' title='52W High'></div>
-    <div style='background: #a855f7; width: 15%;' title='Predictions'></div>
-    <div style='background: #f97316; width: 10%;' title='Volume'></div>
-    <div style='background: #22c55e; width: 25%;' title='Market Cap'></div>
+  <div style='width: 100%; height: 30px; display: flex; border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem; cursor: pointer; transition: all 0.3s ease;'
+       onmouseover="this.style.transform='scale(1.02)'"
+       onmouseout="this.style.transform='scale(1)'">
+    <div style='background: #3b82f6; width: 25%; transition: all 0.3s ease;' title='Current Price: ${last_close:,.2f}'></div>
+    <div style='background: #22d3ee; width: 25%; transition: all 0.3s ease;' title='52W High: ${high_52w:,.2f}'></div>
+    <div style='background: #a855f7; width: 15%; transition: all 0.3s ease;' title='Predictions: ${pred_close:,.2f}'></div>
+    <div style='background: #f97316; width: 10%; transition: all 0.3s ease;' title='Volume: {avg_vol_30d / 1_000_000:.1f}M'></div>
+    <div style='background: #22c55e; width: 25%; transition: all 0.3s ease;' title='Market Cap: ${market_cap / 1_000_000_000:.2f}B'></div>
   </div>
   
   <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;'>
-    <div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
+         onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.transform='translateX(3px)'"
+         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
       <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Current Price</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${last_close:,.2f}</div>
     </div>
-    <div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
+         onmouseover="this.style.background='rgba(34, 211, 238, 0.1)'; this.style.transform='translateX(3px)'"
+         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
       <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● 52W High</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${high_52w:,.2f}</div>
     </div>
-    <div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
+         onmouseover="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.transform='translateX(3px)'"
+         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
       <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Pred. Close</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${pred_close:,.2f}</div>
     </div>
-    <div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
+         onmouseover="this.style.background='rgba(249, 115, 22, 0.1)'; this.style.transform='translateX(3px)'"
+         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
       <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Avg Volume</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>{avg_vol_30d / 1_000_000:.1f}M</div>
     </div>
-    <div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
+         onmouseover="this.style.background='rgba(34, 197, 94, 0.1)'; this.style.transform='translateX(3px)'"
+         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
       <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● 52W Low</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${low_52w:,.2f}</div>
     </div>
