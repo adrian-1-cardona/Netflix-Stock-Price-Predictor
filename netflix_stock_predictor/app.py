@@ -30,20 +30,38 @@ st.set_page_config(
 # Custom CSS - Modern Minimal Dark Theme (matching reference)
 st.markdown("""
     <style>
-    /* Global Styles */
+    /* Global Styles with animations */
     .main {
         background-color: #0b0b1e;
         padding: 0rem 1rem;
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideInUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
     
     .stApp {
         background-color: #0b0b1e;
     }
     
-    /* Sidebar Styling */
+    /* Sidebar Styling with hover effects */
     section[data-testid="stSidebar"] {
         background-color: #0b0b1e;
         border-right: 1px solid #1f1f33;
+        transition: all 0.3s ease;
     }
     
     section[data-testid="stSidebar"] h1 {
@@ -61,9 +79,10 @@ st.markdown("""
     .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
+        animation: slideInUp 0.5s ease-out;
     }
     
-    /* Buttons */
+    /* Buttons with enhanced interactions */
     .stButton button {
         background-color: #1a1a2e;
         color: #ffffff;
@@ -72,18 +91,27 @@ st.markdown("""
         padding: 0.5rem 1.2rem;
         font-size: 0.95rem;
         font-weight: 500;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
     }
     
     .stButton button:hover {
         background-color: #232136;
         border-color: #3a3a54;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
     }
     
-    /* Tabs */
+    .stButton button:active {
+        transform: translateY(0);
+    }
+    
+    /* Tabs with smooth transitions */
     .stTabs [data-baseweb="tab-list"] {
         background-color: transparent;
         border-bottom: 1px solid #2d2d44;
+        gap: 1rem;
     }
     
     .stTabs [data-baseweb="tab"] {
@@ -91,6 +119,14 @@ st.markdown("""
         color: #8b92b0;
         border: none;
         font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
     }
     
     .stTabs [aria-selected="true"] {
@@ -99,10 +135,22 @@ st.markdown("""
         border-bottom: 2px solid #3b82f6 !important;
     }
     
-    /* Headers */
+    .stTabs [aria-selected="true"]::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    /* Headers with gradient effects */
     h1, h2, h3 {
         color: #ffffff !important;
         font-weight: 600 !important;
+        transition: all 0.3s ease;
     }
     
     h1 {
@@ -115,6 +163,10 @@ st.markdown("""
         margin-top: 2rem !important;
     }
     
+    h2:hover {
+        transform: translateX(5px);
+    }
+    
     h3 {
         font-size: 1.25rem !important;
         color: #3b82f6 !important;
@@ -125,28 +177,7 @@ st.markdown("""
         color: #8b92b0;
     }
     
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 2rem;
-        background-color: transparent;
-        border-bottom: 1px solid #1e2749;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        background-color: transparent;
-        color: #8b92b0;
-        border: none;
-        padding: 1rem 0;
-        font-weight: 500;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background-color: transparent;
-        color: #3b82f6;
-        border-bottom: 2px solid #3b82f6;
-    }
-    
-    /* Buttons */
+    /* Buttons gradient */
     .stButton button {
         background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         color: white;
@@ -155,21 +186,26 @@ st.markdown("""
         padding: 0.75rem 1.5rem;
         font-weight: 500;
         box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .stButton button:hover {
         background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         box-shadow: 0 6px 8px rgba(59, 130, 246, 0.4);
-        transform: translateY(-2px);
+        transform: translateY(-2px) scale(1.02);
     }
     
-    /* Info/Warning/Success boxes */
+    .stButton button:active {
+        transform: translateY(0) scale(0.98);
+    }
+    
+    /* Info/Warning/Success boxes with animations */
     .stAlert {
         background-color: #1a1f3a;
         border: 1px solid #1e2749;
         border-radius: 8px;
         color: #ffffff;
+        animation: slideInUp 0.4s ease-out;
     }
     
     /* Success */
@@ -196,18 +232,35 @@ st.markdown("""
         border-left: 4px solid #ef4444;
     }
     
-    /* Dataframes */
+    /* Dataframes with hover effects */
     .stDataFrame {
         background-color: #1a1f3a;
         border: 1px solid #1e2749;
         border-radius: 8px;
+        transition: all 0.3s ease;
+        animation: slideInUp 0.5s ease-out;
     }
     
-    /* Select boxes */
+    .stDataFrame:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    }
+    
+    /* Select boxes with focus effects */
     .stSelectbox > div > div {
         background-color: #1a1f3a;
         border: 1px solid #1e2749;
         color: #ffffff;
+        transition: all 0.3s ease;
+    }
+    
+    .stSelectbox > div > div:hover {
+        border-color: #3b82f6;
+    }
+    
+    .stSelectbox > div > div:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
     
     /* Divider */
@@ -222,7 +275,7 @@ st.markdown("""
         font-size: 0.875rem;
     }
     
-    /* Prediction Cards */
+    /* Prediction Cards with hover animation */
     .prediction-card {
         background: linear-gradient(135deg, #1a1f3a 0%, #0f1629 100%);
         padding: 1.5rem;
@@ -230,11 +283,43 @@ st.markdown("""
         border: 1px solid #1e2749;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         margin: 1rem 0;
+        transition: all 0.3s ease;
+        animation: slideInUp 0.5s ease-out;
     }
     
-    /* Stats Card */
+    .prediction-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        border-color: #3b82f6;
+    }
+    
+    /* Stats Card with hover animation */
     .stats-card {
         background: linear-gradient(135deg, #1a1f3a 0%, #0f1629 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        border: 1px solid #1e2749;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2);
+    }
+    
+    /* Loading spinner animation */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .stSpinner > div {
+        border-color: #3b82f6 !important;
+        border-top-color: transparent !important;
+        animation: spin 1s linear infinite;
+    };
         padding: 2rem;
         border-radius: 12px;
         border: 1px solid #1e2749;
@@ -378,34 +463,12 @@ def create_price_chart(data):
             bgcolor='#1a1f3a',
             font_size=12,
             font_color='#ffffff'
-        )
+        ),
+        transition={'duration': 500, 'easing': 'cubic-in-out'}
     )
     
-    return fig
-    
-    fig.update_layout(
-        plot_bgcolor='#0a0e27',
-        paper_bgcolor='#0a0e27',
-        font=dict(color='#8b92b0'),
-        height=400,
-        showlegend=False,
-        barmode='group',
-        bargap=0.3,
-        xaxis=dict(
-            gridcolor='#1e2749',
-            showgrid=False,
-            color='#8b92b0'
-        ),
-        yaxis=dict(
-            gridcolor='#1e2749',
-            showgrid=True,
-            color='#8b92b0',
-            tickprefix='$',
-            tickformat=',.0f'
-        ),
-        margin=dict(l=40, r=40, t=40, b=40),
-        xaxis_rangeslider_visible=False
-    )
+    # Add smooth animation on initial render
+    fig.update_traces(marker=dict(line=dict(width=0)))
     
     return fig
 
@@ -478,16 +541,29 @@ def create_prediction_gauge(confidence):
     return fig
 
 def main():
-    # Sidebar
+    # Sidebar with animations
     with st.sidebar:
         st.markdown("""
-<div style='padding: 0.5rem 0 2rem 0;'>
-  <div style='font-size: 1.25rem; font-weight: bold; color: #fff; margin-bottom: 2.5rem; line-height: 1.3;'>Netflix Stock<br>Predictor</div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Dashboard</div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Update/Refresh Data</div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Historical Data</div>
-  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Analytics</div>
+<div style='padding: 0.5rem 0 2rem 0; animation: slideIn 0.5s ease-out;'>
+  <div style='display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem;'>
+    <div style='width: 35px; height: 35px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);'></div>
+    <div style='font-size: 1.25rem; font-weight: bold; color: #fff; line-height: 1.3;'>Netflix Stock<br>Predictor</div>
+  </div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Dashboard</div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Update/Refresh Data</div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Historical Data</div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 6px; transition: all 0.3s ease; border-left: 3px solid transparent;' onmouseover="this.style.background='rgba(102, 126, 234, 0.15)'; this.style.paddingLeft='1.2rem'; this.style.borderLeftColor='#667eea'" onmouseout="this.style.background='transparent'; this.style.paddingLeft='0.8rem'; this.style.borderLeftColor='transparent'">Analytics</div>
 </div>
+<style>
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
         """, unsafe_allow_html=True)
         
         st.markdown("<br>", unsafe_allow_html=True)
@@ -501,18 +577,38 @@ def main():
             st.cache_resource.clear()
             st.rerun()
     
-    # Header with Export/Import buttons
+    # Header with Export/Import buttons with enhanced animations
     st.markdown("""
-<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;'>
-  <div style='font-size: 1.4rem; font-weight: 600; color: #fff;'>Report & Analytics</div>
+<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; animation: fadeIn 0.6s ease-out;'>
+  <div style='font-size: 1.4rem; font-weight: 600; color: #fff;'>
+    <span style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>Report & Analytics</span>
+  </div>
 </div>
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
     """, unsafe_allow_html=True)
     
     col_btn1, col_btn2, col_spacer = st.columns([1, 1, 8])
     with col_btn1:
-        st.button("Export", use_container_width=True)
+        st.markdown("""
+        <button style='width: 100%; padding: 0.6rem 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);'
+                onmouseover="this.style.transform='translateY(-3px) scale(1.02)'; this.style.boxShadow='0 8px 15px rgba(102, 126, 234, 0.4)'; this.style.background='linear-gradient(135deg, #764ba2 0%, #667eea 100%)'"
+                onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)'; this.style.background='linear-gradient(135deg, #667eea 0%, #764ba2 100%)'">
+            Export
+        </button>
+        """, unsafe_allow_html=True)
     with col_btn2:
-        st.button("Import", use_container_width=True)
+        st.markdown("""
+        <button style='width: 100%; padding: 0.6rem 1rem; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);'
+                onmouseover="this.style.transform='translateY(-3px) scale(1.02)'; this.style.boxShadow='0 8px 15px rgba(245, 87, 108, 0.4)'; this.style.background='linear-gradient(135deg, #f5576c 0%, #f093fb 100%)'"
+                onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)'; this.style.background='linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'">
+            Import
+        </button>
+        """, unsafe_allow_html=True)
     
     # Load data and model
     try:
@@ -564,36 +660,36 @@ def main():
         }
         avg_confidence = 0
     
-    # Top metrics cards (interactive with hover effects)
+    # Top metrics cards (interactive with hover effects and gradient backgrounds)
     st.markdown(f"""
-<div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;' 
-       onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.transform='translateY(-2px)'"
-       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>📊 Dashboard</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{len(data)}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'rgba(34, 197, 94, 0.2)' if change_7d >= 0 else 'rgba(239, 68, 68, 0.2)'}; color: {'#22c55e' if change_7d >= 0 else '#ef4444'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{change_7d:+.1f}%</span></div>
+<div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #1a1a2e 0%, #16162a 100%); border: 1px solid #2d2d44; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border: 1px solid rgba(102, 126, 234, 0.2);' 
+       onmouseover="this.style.background='linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.3)'"
+       onmouseout="this.style.background='linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>DASHBOARD</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{len(data)}</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)' if change_7d >= 0 else 'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)'}; color: {'#22c55e' if change_7d >= 0 else '#ef4444'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{change_7d:+.1f}%</span></div>
   </div>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;'
-       onmouseover="this.style.background='rgba(34, 197, 94, 0.1)'; this.style.transform='translateY(-2px)'"
-       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>📈 Analytics</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{int(current_volume / 1000)}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'rgba(34, 197, 94, 0.2)' if volume_change >= 0 else 'rgba(239, 68, 68, 0.2)'}; color: {'#22c55e' if volume_change >= 0 else '#ef4444'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{volume_change:+.1f}%</span></div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(34, 197, 94, 0.2);'
+       onmouseover="this.style.background='linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(34, 197, 94, 0.3)'"
+       onmouseout="this.style.background='linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>ANALYTICS</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #22c55e 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{int(current_volume / 1000)}</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)' if volume_change >= 0 else 'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)'}; color: {'#22c55e' if volume_change >= 0 else '#ef4444'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{volume_change:+.1f}%</span></div>
   </div>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;'
-       onmouseover="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.transform='translateY(-2px)'"
-       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>📅 Data Last Freshed</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{last_date.strftime('%b %d')}</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'rgba(239, 68, 68, 0.2)' if days_old > 3 else 'rgba(34, 197, 94, 0.2)'}; color: {'#ef4444' if days_old > 3 else '#22c55e'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{days_old} days</span></div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(240, 147, 251, 0.05) 0%, rgba(245, 87, 108, 0.05) 100%); border: 1px solid rgba(240, 147, 251, 0.2);'
+       onmouseover="this.style.background='linear-gradient(135deg, rgba(240, 147, 251, 0.15) 0%, rgba(245, 87, 108, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(240, 147, 251, 0.3)'"
+       onmouseout="this.style.background='linear-gradient(135deg, rgba(240, 147, 251, 0.05) 0%, rgba(245, 87, 108, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>DATA FRESHNESS</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{last_date.strftime('%b %d')}</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: {'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)' if days_old > 3 else 'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)'}; color: {'#ef4444' if days_old > 3 else '#22c55e'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{days_old} days</span></div>
   </div>
-  <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 8px;'
-       onmouseover="this.style.background='rgba(251, 191, 36, 0.1)'; this.style.transform='translateY(-2px)'"
-       onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)'">
-    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>🎯 Model Accuracy</div>
-    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{avg_confidence:.0f}%</div>
-    <div style='color: #6b7280; font-size: 0.75rem;'>R² Score <span style='background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>0.95</span></div>
+  <div style='cursor: pointer; transition: all 0.3s ease; padding: 1rem; border-radius: 8px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%); border: 1px solid rgba(251, 191, 36, 0.2);'
+       onmouseover="this.style.background='linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%)'; this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(251, 191, 36, 0.3)'"
+       onmouseout="this.style.background='linear-gradient(135deg, rgba(251, 191, 36, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+    <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>MODEL ACCURACY</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>{avg_confidence:.0f}%</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>R² Score <span style='background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%); color: #22c55e; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>0.95</span></div>
   </div>
 </div>
     """, unsafe_allow_html=True)
@@ -786,50 +882,50 @@ def main():
         pred_open = predictions['open']['prediction']
         
         st.markdown(f"""
-<div style='padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
-  <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>💰 Total Market Cap</div>
-  <div style='color: #fff; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;'>${market_cap / 1_000_000_000:.2f}B</div>
-  <div style='color: #6b7280; font-size: 0.75rem; margin-bottom: 1rem;'><span style='background: {'rgba(34, 197, 94, 0.2)' if yoy_change >= 0 else 'rgba(239, 68, 68, 0.2)'}; color: {'#22c55e' if yoy_change >= 0 else '#ef4444'}; padding: 0.1rem 0.4rem; border-radius: 4px; font-weight: 600;'>{yoy_change:+.1f}%</span> YoY</div>
+<div style='padding: 1.5rem; background: linear-gradient(135deg, #1a1a2e 0%, #16162a 100%); border: 1px solid #2d2d44; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);'>
+  <div style='color: #a0aec0; font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 500; letter-spacing: 0.5px;'>TOTAL MARKET CAP</div>
+  <div style='color: #fff; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;'>${market_cap / 1_000_000_000:.2f}B</div>
+  <div style='color: #6b7280; font-size: 0.75rem; margin-bottom: 1rem;'><span style='background: {'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%)' if yoy_change >= 0 else 'linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%)'}; color: {'#22c55e' if yoy_change >= 0 else '#ef4444'}; padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;'>{yoy_change:+.1f}%</span> YoY</div>
   
-  <div style='width: 100%; height: 30px; display: flex; border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem; cursor: pointer; transition: all 0.3s ease;'
-       onmouseover="this.style.transform='scale(1.02)'"
-       onmouseout="this.style.transform='scale(1)'">
-    <div style='background: #3b82f6; width: 25%; transition: all 0.3s ease;' title='Current Price: ${last_close:,.2f}'></div>
-    <div style='background: #22d3ee; width: 25%; transition: all 0.3s ease;' title='52W High: ${high_52w:,.2f}'></div>
-    <div style='background: #a855f7; width: 15%; transition: all 0.3s ease;' title='Predictions: ${pred_close:,.2f}'></div>
-    <div style='background: #f97316; width: 10%; transition: all 0.3s ease;' title='Volume: {avg_vol_30d / 1_000_000:.1f}M'></div>
-    <div style='background: #22c55e; width: 25%; transition: all 0.3s ease;' title='Market Cap: ${market_cap / 1_000_000_000:.2f}B'></div>
+  <div style='width: 100%; height: 30px; display: flex; border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);'
+       onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 15px rgba(59, 130, 246, 0.3)'"
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.2)'">
+    <div style='background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); width: 25%; transition: all 0.3s ease;' title='Current Price: ${last_close:,.2f}'></div>
+    <div style='background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); width: 25%; transition: all 0.3s ease;' title='52W High: ${high_52w:,.2f}'></div>
+    <div style='background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); width: 15%; transition: all 0.3s ease;' title='Predictions: ${pred_close:,.2f}'></div>
+    <div style='background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); width: 10%; transition: all 0.3s ease;' title='Volume: {avg_vol_30d / 1_000_000:.1f}M'></div>
+    <div style='background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); width: 25%; transition: all 0.3s ease;' title='Market Cap: ${market_cap / 1_000_000_000:.2f}B'></div>
   </div>
   
   <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;'>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
-         onmouseover="this.style.background='rgba(59, 130, 246, 0.1)'; this.style.transform='translateX(3px)'"
-         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Current Price</div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.1);'
+         onmouseover="this.style.background='rgba(59, 130, 246, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(59, 130, 246, 0.3)'"
+         onmouseout="this.style.background='rgba(59, 130, 246, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(59, 130, 246, 0.1)'">
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>Current Price</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${last_close:,.2f}</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
-         onmouseover="this.style.background='rgba(34, 211, 238, 0.1)'; this.style.transform='translateX(3px)'"
-         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● 52W High</div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(34, 211, 238, 0.05); border: 1px solid rgba(34, 211, 238, 0.1);'
+         onmouseover="this.style.background='rgba(34, 211, 238, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(34, 211, 238, 0.3)'"
+         onmouseout="this.style.background='rgba(34, 211, 238, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(34, 211, 238, 0.1)'">
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>52W High</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${high_52w:,.2f}</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
-         onmouseover="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.transform='translateX(3px)'"
-         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Pred. Close</div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.1);'
+         onmouseover="this.style.background='rgba(168, 85, 247, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(168, 85, 247, 0.3)'"
+         onmouseout="this.style.background='rgba(168, 85, 247, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(168, 85, 247, 0.1)'">
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>Pred. Close</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${pred_close:,.2f}</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
-         onmouseover="this.style.background='rgba(249, 115, 22, 0.1)'; this.style.transform='translateX(3px)'"
-         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Avg Volume</div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.1);'
+         onmouseover="this.style.background='rgba(249, 115, 22, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(249, 115, 22, 0.3)'"
+         onmouseout="this.style.background='rgba(249, 115, 22, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(249, 115, 22, 0.1)'">
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>Avg Volume</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>{avg_vol_30d / 1_000_000:.1f}M</div>
     </div>
-    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px;'
-         onmouseover="this.style.background='rgba(34, 197, 94, 0.1)'; this.style.transform='translateX(3px)'"
-         onmouseout="this.style.background='transparent'; this.style.transform='translateX(0)'">
-      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● 52W Low</div>
+    <div style='cursor: pointer; transition: all 0.3s ease; padding: 0.5rem; border-radius: 6px; background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.1);'
+         onmouseover="this.style.background='rgba(34, 197, 94, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(34, 197, 94, 0.3)'"
+         onmouseout="this.style.background='rgba(34, 197, 94, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(34, 197, 94, 0.1)'">
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>52W Low</div>
       <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${low_52w:,.2f}</div>
     </div>
   </div>
