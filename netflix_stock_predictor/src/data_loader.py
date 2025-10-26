@@ -41,10 +41,17 @@ class DataLoader:
     
     def load_stock_info(self) -> pd.DataFrame:
         """Load company information and metrics."""
-        df = pd.read_csv(self.data_dir / 'Netflix_stock_info.csv')
-        df['Date'] = pd.to_datetime(df['Date'])
-        df.set_index('Date', inplace=True)
-        return df
+        try:
+            df = pd.read_csv(self.data_dir / 'Netflix_stock_info.csv')
+            # If the file doesn't have date information, we'll return an empty DataFrame
+            if 'Date' not in df.columns:
+                return pd.DataFrame()
+            df['Date'] = pd.to_datetime(df['Date'])
+            df.set_index('Date', inplace=True)
+            return df
+        except Exception as e:
+            print(f"Warning: Could not load stock info: {str(e)}")
+            return pd.DataFrame()
     
     def load_stock_dividends(self) -> pd.DataFrame:
         """Load dividend events."""
