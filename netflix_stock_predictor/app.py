@@ -27,64 +27,76 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS - Dark Medical Report Theme
+# Custom CSS - Modern Minimal Dark Theme (matching reference)
 st.markdown("""
     <style>
     /* Global Styles */
     .main {
-        background-color: #0a0e27;
+        background-color: #0b0b1e;
         padding: 0rem 1rem;
     }
     
     .stApp {
-        background-color: #0a0e27;
+        background-color: #0b0b1e;
     }
     
     /* Sidebar Styling */
     section[data-testid="stSidebar"] {
-        background-color: #0a0e27;
-        border-right: 1px solid #1e2749;
+        background-color: #0b0b1e;
+        border-right: 1px solid #1f1f33;
     }
     
     section[data-testid="stSidebar"] h1 {
         color: #ffffff;
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: 600;
-        padding: 1rem 0;
+        padding: 0.5rem 0;
     }
     
     section[data-testid="stSidebar"] .stMarkdown {
+        color: #fff;
+    }
+    
+    /* Remove default padding */
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    /* Buttons */
+    .stButton button {
+        background-color: #1a1a2e;
+        color: #ffffff;
+        border: 1px solid #2d2d44;
+        border-radius: 8px;
+        padding: 0.5rem 1.2rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton button:hover {
+        background-color: #232136;
+        border-color: #3a3a54;
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        background-color: transparent;
+        border-bottom: 1px solid #2d2d44;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: transparent;
         color: #8b92b0;
+        border: none;
+        font-weight: 500;
     }
     
-    /* Metric Cards */
-    div[data-testid="stMetric"] {
-        background: linear-gradient(135deg, #1a1f3a 0%, #0f1629 100%);
-        padding: 1.5rem;
-        border-radius: 12px;
-        border: 1px solid #1e2749;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-    
-    div[data-testid="stMetric"] label {
-        color: #8b92b0 !important;
-        font-size: 0.85rem !important;
-        font-weight: 500 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    .stTabs [aria-selected="true"] {
+        background-color: transparent !important;
         color: #ffffff !important;
-        font-size: 2rem !important;
-        font-weight: 600 !important;
-    }
-    
-    div[data-testid="stMetric"] [data-testid="stMetricDelta"] {
-        background-color: rgba(59, 130, 246, 0.1);
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
+        border-bottom: 2px solid #3b82f6 !important;
     }
     
     /* Headers */
@@ -94,7 +106,7 @@ st.markdown("""
     }
     
     h1 {
-        font-size: 2rem !important;
+        font-size: 1.4rem !important;
         margin-bottom: 0.5rem !important;
     }
     
@@ -469,42 +481,38 @@ def main():
     # Sidebar
     with st.sidebar:
         st.markdown("""
-            <h1 style='color: #ffffff; font-size: 1.5rem; font-weight: 600; margin-bottom: 0;'>
-                Netflix Stock<br>Predictor
-            </h1>
+<div style='padding: 0.5rem 0 2rem 0;'>
+  <div style='font-size: 1.25rem; font-weight: bold; color: #fff; margin-bottom: 2.5rem; line-height: 1.3;'>Netflix Stock<br>Predictor</div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Dashboard</div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Update/Refresh Data</div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Historical Data</div>
+  <div style='font-size: 0.95rem; color: #fff; margin-bottom: 1.2rem; cursor: pointer;'>Analytics</div>
+</div>
         """, unsafe_allow_html=True)
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Navigation menu
-        st.markdown("### Dashboard")
-        st.markdown("### Update/Refresh Data")
-        st.markdown("### Historical Data")
-        st.markdown("### Analytics")
-        
-        st.markdown("<br><br>", unsafe_allow_html=True)
+        # Scenario selector (hidden label)
+        scenario = st.selectbox("Market Scenario", ["Neutral", "Bullish", "Bearish"], key="scenario", label_visibility="collapsed")
         
         # Data refresh button
         if st.button("Refresh Data", use_container_width=True):
             st.cache_data.clear()
             st.cache_resource.clear()
             st.rerun()
-        
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        st.caption("Built with Streamlit & scikit-learn")
     
-    # Header
-    col_header1, col_header2 = st.columns([3, 1])
-    with col_header1:
-        st.markdown("""
-            <h1 style='margin-bottom: 0.5rem;'>Report & Analytics</h1>
-        """, unsafe_allow_html=True)
-    with col_header2:
-        col_btn1, col_btn2 = st.columns(2)
-        with col_btn1:
-            st.button("Export", use_container_width=True)
-        with col_btn2:
-            st.button("Import", use_container_width=True)
+    # Header with Export/Import buttons
+    st.markdown("""
+<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;'>
+  <div style='font-size: 1.4rem; font-weight: 600; color: #fff;'>Report & Analytics</div>
+</div>
+    """, unsafe_allow_html=True)
+    
+    col_btn1, col_btn2, col_spacer = st.columns([1, 1, 8])
+    with col_btn1:
+        st.button("Export", use_container_width=True)
+    with col_btn2:
+        st.button("Import", use_container_width=True)
     
     # Load data and model
     try:
@@ -535,117 +543,170 @@ def main():
     avg_volume = data['Volume'].tail(30).mean()
     current_volume = data['Volume'].iloc[-1]
     volume_change = ((current_volume / avg_volume - 1) * 100)
-    
-    # Get predictions for Analytics card
+
+    # Get predictions for Analytics card (move here so predictions is always defined)
     try:
         X, _ = pipeline.prepare_features(data)
         latest_features = X.iloc[-1:]
         predictions = pipeline.predict_with_confidence(latest_features, confidence_level=0.95)
-        pred_value = predictions['close']['prediction']
-        pred_change = ((pred_value / last_close - 1) * 100)
-        avg_confidence = (predictions['open']['confidence'] + 
-                        predictions['high']['confidence'] + 
-                        predictions['close']['confidence']) / 3
-    except:
-        pred_value = last_close
-        pred_change = 0
-        avg_confidence = 95
+        # Scenario adjustment
+        scenario = st.session_state.get("scenario", "Neutral")
+        scenario_factor = {"Neutral": 1.0, "Bullish": 1.03, "Bearish": 0.97}[scenario]
+        # Apply scenario factor to close prediction only (for carousel)
+        predictions['close']['prediction'] *= scenario_factor
+        avg_confidence = (predictions['open']['confidence'] + predictions['high']['confidence'] + predictions['close']['confidence']) / 3
+    except Exception as e:
+        st.error(f"Prediction error: {e}")
+        predictions = {
+            'open': {'confidence': 0, 'prediction': 0, 'lower_bound': 0, 'upper_bound': 0},
+            'high': {'confidence': 0, 'prediction': 0, 'lower_bound': 0, 'upper_bound': 0},
+            'close': {'confidence': 0, 'prediction': 0, 'lower_bound': 0, 'upper_bound': 0}
+        }
+        avg_confidence = 0
     
-    # Top metrics row with dark theme cards - ALL REAL DATA
-    st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
+    # Top metrics cards (flat, modern design with real data)
+    st.markdown(f"""
+<div style='display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
+  <div>
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Dashboard</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{len(data)}</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{change_7d:+.1f}%</span></div>
+  </div>
+  <div>
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Analytics</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{int(current_volume / 1000)}</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{volume_change:+.1f}%</span></div>
+  </div>
+  <div>
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Data Last Freshed</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{last_date.strftime('%b %d')}</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{days_old} days</span></div>
+  </div>
+  <div>
+    <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Model Accuracy Percentage</div>
+    <div style='color: #fff; font-size: 2rem; font-weight: 600; margin-bottom: 0.25rem;'>{avg_confidence:.0f}%</div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>Last 7 day <span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>R² 0.95</span></div>
+  </div>
+</div>
+    """, unsafe_allow_html=True)
+
+    # Carousel for prediction cards
+    carousel_tab = st.tabs(["Open", "High", "Close"])
+    with carousel_tab[0]:
+        open_conf = predictions['open']['confidence']
+        open_pred = predictions['open']['prediction']
+        open_lower = predictions['open']['lower_bound']
+        open_upper = predictions['open']['upper_bound']
+        open_range = open_upper - open_lower
         st.markdown(f"""
-            <div class='stats-card' style='cursor: pointer; transition: transform 0.3s ease;' 
-                 onmouseover="this.style.transform='translateY(-5px)'" 
-                 onmouseout="this.style.transform='translateY(0)'">
-                <div style='color: #8b92b0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;'>
-                    Current Stock Price
+<div class='prediction-card' style='cursor: pointer; transition: all 0.3s ease;'
+     onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(59, 130, 246, 0.3)'"
+     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.3)'">
+    <div style='color: #3b82f6; font-size: 2rem; margin-bottom: 0.5rem; font-weight: 600;'>OPEN</div>
+    <h3 style='color: #ffffff; margin-bottom: 1rem; font-size: 1.1rem;'>Opening Price</h3>
+    <div style='color: #ffffff; font-size: 2.2rem; font-weight: 600; margin-bottom: 0.75rem;'>
+        {open_pred:,.2f}
+    </div>
+</div>
+""", unsafe_allow_html=True)
+    with carousel_tab[1]:
+        high_pred = predictions['high']['prediction']
+        high_lower = predictions['high']['lower_bound']
+        high_upper = predictions['high']['upper_bound']
+        high_range = high_upper - high_lower
+        high_conf = predictions['high']['confidence']
+        st.markdown(f"""
+<div class='prediction-card' style='cursor: pointer; transition: all 0.3s ease;'
+     onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(34, 197, 94, 0.3)'"
+     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.3)'">
+    <div style='color: #22c55e; font-size: 2rem; margin-bottom: 0.5rem; font-weight: 600;'>HIGH</div>
+    <h3 style='color: #ffffff; margin-bottom: 1rem; font-size: 1.1rem;'>Intraday High</h3>
+    <div style='color: #ffffff; font-size: 2.2rem; font-weight: 600; margin-bottom: 0.75rem;'>
+        {high_pred:,.2f}
+    </div>
+    <div style='background: linear-gradient(90deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.05) 100%); padding: 0.5rem; border-radius: 6px; margin-bottom: 0.5rem;'>
+        <div style='display: flex; justify-content: space-between; align-items: center;'>
+            <span style='color: #8b92b0; font-size: 0.8rem;'>Confidence</span>
+            <span style='color: #22c55e; font-weight: 600; font-size: 0.9rem;'>{high_conf:.1f}%</span>
+        </div>
+    </div>
+    <div style='color: #8b92b0; font-size: 0.8rem; margin-bottom: 0.25rem;'>
+        <strong style='color: #ffffff;'>Range:</strong> {high_lower:,.2f} - {high_upper:,.2f}
+    </div>
+    <div style='color: #6b7280; font-size: 0.75rem;'>
+        Spread: {high_range:,.2f}
+    </div>
+</div>
+""", unsafe_allow_html=True)
+    with carousel_tab[2]:
+        close_conf = predictions['close']['confidence']
+        close_pred = predictions['close']['prediction']
+        close_lower = predictions['close']['lower_bound']
+        close_upper = predictions['close']['upper_bound']
+        close_range = close_upper - close_lower
+        potential_gain = close_pred - last_close
+        potential_gain_pct = (potential_gain / last_close) * 100
+        st.markdown(f"""
+<div class='prediction-card' style='cursor: pointer; transition: all 0.3s ease;'
+     onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(168, 85, 247, 0.3)'"
+     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.3)'">
+    <div style='color: #a855f7; font-size: 2rem; margin-bottom: 0.5rem; font-weight: 600;'>CLOSE</div>
+    <h3 style='color: #ffffff; margin-bottom: 1rem; font-size: 1.1rem;'>Closing Price</h3>
+    <div style='color: #ffffff; font-size: 2.2rem; font-weight: 600; margin-bottom: 0.75rem;'>
+        {close_pred:,.2f}
+    </div>
+    <div style='background: linear-gradient(90deg, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 100%); padding: 0.5rem; border-radius: 6px; margin-bottom: 0.5rem;'>
+        <div style='display: flex; justify-content: space-between; align-items: center;'>
+            <span style='color: #8b92b0; font-size: 0.8rem;'>Confidence</span>
+                        <span style='color: #a855f7; font-weight: 600; font-size: 0.9rem;'>{close_conf:.1f}%</span>
+                    </div>
                 </div>
-                <div style='color: #ffffff; font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
-                    ${last_close:,.2f}
+                <div style='color: #8b92b0; font-size: 0.8rem; margin-bottom: 0.25rem;'>
+                    <strong style='color: #ffffff;'>Range:</strong> ${close_lower:,.2f} - ${close_upper:,.2f}
                 </div>
-                <div style='background-color: {"rgba(34, 197, 94, 0.2)" if change_7d >= 0 else "rgba(239, 68, 68, 0.2)"}; 
-                            color: {"#22c55e" if change_7d >= 0 else "#ef4444"}; 
-                            padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; 
-                            display: inline-block; font-weight: 600;'>
-                    Last 7 days {change_7d:+.2f}%
-                </div>
-                <div style='color: #6b7280; font-size: 0.7rem; margin-top: 0.5rem;'>
-                    Volume: {current_volume:,.0f}
+                <div style='color: {"#22c55e" if potential_gain >= 0 else "#ef4444"}; font-size: 0.75rem; font-weight: 600;'>
+                    Expected: {potential_gain:+,.2f} ({potential_gain_pct:+.2f}%)
                 </div>
             </div>
         """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown(f"""
-            <div class='stats-card' style='cursor: pointer; transition: transform 0.3s ease;' 
-                 onmouseover="this.style.transform='translateY(-5px)'" 
-                 onmouseout="this.style.transform='translateY(0)'">
-                <div style='color: #8b92b0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;'>
-                    Next Day Prediction
+        # Model Confidence card (outside carousel)
+        if 'avg_confidence' in locals():
+            st.markdown(f"""
+                <div class='stats-card' style='margin-top: 2rem;'>
+                    <div style='color: #8b92b0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;'>
+                        Model Confidence
+                    </div>
+                    <div style='color: #ffffff; font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
+                        {avg_confidence:.1f}%
+                    </div>
+                    <div style='background-color: {"rgba(34, 197, 94, 0.2)" if avg_confidence >= 90 else "rgba(251, 191, 36, 0.2)" if avg_confidence >= 80 else "rgba(239, 68, 68, 0.2)"}; 
+                                color: {"#22c55e" if avg_confidence >= 90 else "#fbbf24" if avg_confidence >= 80 else "#ef4444"}; 
+                                padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; 
+                                display: inline-block; font-weight: 600;'>
+                        {"Very High" if avg_confidence >= 90 else "High" if avg_confidence >= 80 else "Moderate"}
+                    </div>
+                    <div style='color: #6b7280; font-size: 0.7rem; margin-top: 0.5rem;'>
+                        R² Score: ~0.95
+                    </div>
                 </div>
-                <div style='color: #ffffff; font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
-                    ${pred_value:,.2f}
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
+                <div class='stats-card' style='margin-top: 2rem;'>
+                    <div style='color: #8b92b0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;'>
+                        Model Confidence
+                    </div>
+                    <div style='color: #ffffff; font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
+                        N/A
+                    </div>
+                    <div style='background-color: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; display: inline-block; font-weight: 600;'>
+                        No Confidence
+                    </div>
+                    <div style='color: #6b7280; font-size: 0.7rem; margin-top: 0.5rem;'>
+                        R² Score: ~0.95
+                    </div>
                 </div>
-                <div style='background-color: {"rgba(34, 197, 94, 0.2)" if pred_change >= 0 else "rgba(239, 68, 68, 0.2)"}; 
-                            color: {"#22c55e" if pred_change >= 0 else "#ef4444"}; 
-                            padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; 
-                            display: inline-block; font-weight: 600;'>
-                    Expected {pred_change:+.2f}%
-                </div>
-                <div style='color: #6b7280; font-size: 0.7rem; margin-top: 0.5rem;'>
-                    Confidence: {avg_confidence:.1f}%
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown(f"""
-            <div class='stats-card' style='cursor: pointer; transition: transform 0.3s ease;' 
-                 onmouseover="this.style.transform='translateY(-5px)'" 
-                 onmouseout="this.style.transform='translateY(0)'">
-                <div style='color: #8b92b0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;'>
-                    Data Last Updated
-                </div>
-                <div style='color: #ffffff; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
-                    {last_date.strftime('%b %d, %Y')}
-                </div>
-                <div style='background-color: {"rgba(239, 68, 68, 0.2)" if days_old > 30 else "rgba(251, 191, 36, 0.2)" if days_old > 7 else "rgba(34, 197, 94, 0.2)"}; 
-                            color: {"#ef4444" if days_old > 30 else "#fbbf24" if days_old > 7 else "#22c55e"}; 
-                            padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; 
-                            display: inline-block; font-weight: 600;'>
-                    {days_old} days ago
-                </div>
-                <div style='color: #6b7280; font-size: 0.7rem; margin-top: 0.5rem;'>
-                    Total records: {len(data):,}
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-    
-    with col4:
-        st.markdown(f"""
-            <div class='stats-card' style='cursor: pointer; transition: transform 0.3s ease;' 
-                 onmouseover="this.style.transform='translateY(-5px)'" 
-                 onmouseout="this.style.transform='translateY(0)'">
-                <div style='color: #8b92b0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;'>
-                    Model Confidence
-                </div>
-                <div style='color: #ffffff; font-size: 2.5rem; font-weight: 600; margin-bottom: 0.5rem;'>
-                    {avg_confidence:.1f}%
-                </div>
-                <div style='background-color: {"rgba(34, 197, 94, 0.2)" if avg_confidence >= 90 else "rgba(251, 191, 36, 0.2)" if avg_confidence >= 80 else "rgba(239, 68, 68, 0.2)"}; 
-                            color: {"#22c55e" if avg_confidence >= 90 else "#fbbf24" if avg_confidence >= 80 else "#ef4444"}; 
-                            padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; 
-                            display: inline-block; font-weight: 600;'>
-                    {"Very High" if avg_confidence >= 90 else "High" if avg_confidence >= 80 else "Moderate"}
-                </div>
-                <div style='color: #6b7280; font-size: 0.7rem; margin-top: 0.5rem;'>
-                    R² Score: ~0.95
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
     
     # Warning for old data
     if days_old > 7:
@@ -660,33 +721,20 @@ def main():
     with col_left:
         # Statistics Overview Chart
         st.markdown("""
-            <div class='stats-card'>
-                <h3 style='color: #ffffff; margin-bottom: 1rem;'>Statics Overview</h3>
-            </div>
+<div style='padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px; margin-bottom: 1.5rem;'>
+  <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;'>
+    <div style='font-size: 1rem; font-weight: 600; color: #fff;'>Statics Overview</div>
+    <div style='display: flex; gap: 1.5rem; align-items: center;'>
+      <span style='color: #3b82f6; font-size: 0.85rem;'>● High</span>
+      <span style='color: #fff; font-size: 0.85rem;'>● Close</span>
+      <button style='background: #232136; color: #fff; border: 1px solid #444; border-radius: 6px; padding: 0.4rem 0.9rem; font-size: 0.85rem; cursor: pointer;'>6 Month</button>
+    </div>
+  </div>
+</div>
         """, unsafe_allow_html=True)
         
-        # Time range selector
-        col_legend, col_range = st.columns([2, 1])
-        with col_legend:
-            st.markdown("""
-                <div style='display: flex; gap: 1rem; align-items: center;'>
-                    <span style='color: #3b82f6; font-size: 0.875rem;'>● Income</span>
-                    <span style='color: #ffffff; font-size: 0.875rem;'>● Expenses</span>
-                </div>
-            """, unsafe_allow_html=True)
-        with col_range:
-            st.selectbox("", ["6 Month", "1 Month", "3 Months", "1 Year"], key="overview_range", label_visibility="collapsed")
-        
         # Filter data based on selection
-        time_range = st.session_state.get("overview_range", "6 Month")
-        if time_range == "1 Month":
-            display_data = data.tail(21)
-        elif time_range == "3 Months":
-            display_data = data.tail(63)
-        elif time_range == "6 Month":
-            display_data = data.tail(126)
-        else:
-            display_data = data.tail(252)
+        display_data = data.tail(126)
         
         # Create bar chart
         st.plotly_chart(create_price_chart(display_data), use_container_width=True)
@@ -694,9 +742,9 @@ def main():
     with col_right:
         # Historical Data Card
         st.markdown("""
-            <div class='stats-card' style='height: 100%;'>
-                <h3 style='color: #ffffff; margin-bottom: 1.5rem;'>Key Metrics</h3>
-            </div>
+<div style='padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
+  <div style='font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 1.5rem;'>Historical Data</div>
+</div>
         """, unsafe_allow_html=True)
         
         # Calculate real metrics
@@ -714,89 +762,59 @@ def main():
         # Market cap estimate (Netflix has ~440M shares outstanding)
         market_cap = last_close * 440_000_000
         
-        st.markdown(f"""
-            <div style='margin: 1rem 0;'>
-                <div style='color: #8b92b0; font-size: 0.875rem; margin-bottom: 0.5rem;'>Market Cap (Est.)</div>
-                <div style='display: flex; align-items: baseline; gap: 0.5rem;'>
-                    <span style='color: #ffffff; font-size: 2rem; font-weight: 600;'>${market_cap / 1_000_000_000:.1f}B</span>
-                    <span class='badge' style='background-color: {"rgba(34, 197, 94, 0.2)" if yoy_change >= 0 else "rgba(239, 68, 68, 0.2)"}; 
-                                              color: {"#22c55e" if yoy_change >= 0 else "#ef4444"};'>
-                        YoY {yoy_change:+.1f}%
-                    </span>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
+        # Calculate price ranges for different periods
+        high_30d = data['High'].tail(30).max()
+        low_30d = data['Low'].tail(30).min()
+        high_90d = data['High'].tail(90).max()
+        low_90d = data['Low'].tail(90).min()
         
-        # Colored bar chart - 52-week range visualization
-        high_52w = data['High'].tail(252).max()
-        low_52w = data['Low'].tail(252).min()
-        current = data['Close'].iloc[-1]
+        # Calculate average volumes
+        avg_vol_30d = data['Volume'].tail(30).mean()
+        avg_vol_90d = data['Volume'].tail(90).mean()
         
-        # Calculate percentages for the bar
-        range_total = high_52w - low_52w
-        current_pct = ((current - low_52w) / range_total * 100) if range_total > 0 else 50
+        # Get prediction values
+        pred_close = predictions['close']['prediction']
+        pred_high = predictions['high']['prediction']
+        pred_open = predictions['open']['prediction']
         
         st.markdown(f"""
-            <div style='margin: 2rem 0;'>
-                <div style='color: #8b92b0; font-size: 0.875rem; margin-bottom: 0.5rem;'>
-                    52-Week Range (Current: ${current:,.2f})
-                </div>
-                <div style='width: 100%; height: 40px; background: linear-gradient(90deg, 
-                    #ef4444 0%, 
-                    #f97316 25%, 
-                    #fbbf24 50%, 
-                    #22c55e 75%, 
-                    #3b82f6 100%); 
-                    border-radius: 8px; position: relative;'>
-                    <div style='position: absolute; left: {current_pct}%; top: 50%; 
-                                transform: translate(-50%, -50%); 
-                                width: 4px; height: 50px; background-color: #ffffff; 
-                                box-shadow: 0 0 10px rgba(255,255,255,0.8);'>
-                    </div>
-                </div>
-                <div style='display: flex; justify-content: space-between; margin-top: 0.5rem;'>
-                    <span style='color: #8b92b0; font-size: 0.75rem;'>Low: ${low_52w:,.2f}</span>
-                    <span style='color: #8b92b0; font-size: 0.75rem;'>High: ${high_52w:,.2f}</span>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # Category breakdown with REAL metrics
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        # Calculate real technical indicators
-        data_copy = data.copy()
-        data_copy['RSI'] = calculate_rsi(data_copy['Close'])
-        current_rsi = data_copy['RSI'].iloc[-1]
-        
-        ma_20 = data['Close'].rolling(20).mean().iloc[-1]
-        ma_50 = data['Close'].rolling(50).mean().iloc[-1]
-        volatility = data['Close'].pct_change().std() * 100
-        avg_volume_30d = data['Volume'].tail(30).mean()
-        
-        categories = [
-            ("52-Week High", f"${high_52w:,.2f}", "#3b82f6"),
-            ("52-Week Low", f"${low_52w:,.2f}", "#ef4444"),
-            ("20-Day MA", f"${ma_20:,.2f}", "#22c55e"),
-            ("50-Day MA", f"${ma_50:,.2f}", "#fbbf24"),
-            ("RSI (14)", f"{current_rsi:.1f}", "#a855f7"),
-            ("Volatility", f"{volatility:.2f}%", "#f97316"),
-        ]
-        
-        for cat_name, cat_value, cat_color in categories:
-            st.markdown(f"""
-                <div style='display: flex; justify-content: space-between; align-items: center; 
-                            margin: 1rem 0; padding: 0.75rem; background: rgba(255,255,255,0.02); 
-                            border-radius: 8px; transition: all 0.3s ease; cursor: pointer;'
-                     onmouseover="this.style.backgroundColor='rgba(255,255,255,0.05)'"
-                     onmouseout="this.style.backgroundColor='rgba(255,255,255,0.02)'">
-                    <div style='display: flex; align-items: center; gap: 0.5rem;'>
-                        <div style='width: 12px; height: 12px; background-color: {cat_color}; border-radius: 50%;'></div>
-                        <span style='color: #8b92b0; font-size: 0.875rem;'>{cat_name}</span>
-                    </div>
-                    <span style='color: #ffffff; font-weight: 600; font-size: 1rem;'>{cat_value}</span>
-                </div>
-            """, unsafe_allow_html=True)
+<div style='padding: 1.5rem; background: #1a1a2e; border: 1px solid #2d2d44; border-radius: 12px;'>
+  <div style='color: #8b92b0; font-size: 0.85rem; margin-bottom: 0.5rem;'>Total Market Cap</div>
+  <div style='color: #fff; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;'>${market_cap / 1_000_000_000:.2f}B</div>
+  <div style='color: #6b7280; font-size: 0.75rem; margin-bottom: 1rem;'><span style='background: rgba(139, 146, 176, 0.2); padding: 0.1rem 0.4rem; border-radius: 4px;'>{yoy_change:+.1f}%</span></div>
+  
+  <div style='width: 100%; height: 30px; display: flex; border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem;'>
+    <div style='background: #3b82f6; width: 25%;' title='Current Price'></div>
+    <div style='background: #22d3ee; width: 25%;' title='52W High'></div>
+    <div style='background: #a855f7; width: 15%;' title='Predictions'></div>
+    <div style='background: #f97316; width: 10%;' title='Volume'></div>
+    <div style='background: #22c55e; width: 25%;' title='Market Cap'></div>
+  </div>
+  
+  <div style='display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;'>
+    <div>
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Current Price</div>
+      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${last_close:,.2f}</div>
+    </div>
+    <div>
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● 52W High</div>
+      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${high_52w:,.2f}</div>
+    </div>
+    <div>
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Pred. Close</div>
+      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${pred_close:,.2f}</div>
+    </div>
+    <div>
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● Avg Volume</div>
+      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>{avg_vol_30d / 1_000_000:.1f}M</div>
+    </div>
+    <div>
+      <div style='color: #8b92b0; font-size: 0.75rem; margin-bottom: 0.25rem;'>● 52W Low</div>
+      <div style='color: #fff; font-size: 1rem; font-weight: 600;'>${low_52w:,.2f}</div>
+    </div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
     
     # Predictions Section
     st.markdown("<br><br>", unsafe_allow_html=True)
