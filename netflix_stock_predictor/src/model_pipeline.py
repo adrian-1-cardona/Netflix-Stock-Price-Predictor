@@ -355,3 +355,4 @@ if __name__ == '__main__':
     # Make predictions
     predictions = pipeline.predict(X_test)
     print(f"Made predictions for {len(predictions['open'])} days")
+    
