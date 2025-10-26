@@ -114,18 +114,13 @@ class DataLoader:
         processed_df = df.copy()
         
         # Handle missing values
-        processed_df = processed_df.fillna(method='ffill')  # Forward fill
-        processed_df = processed_df.fillna(method='bfill')  # Backward fill remaining NaNs
+        processed_df = processed_df.fillna(0)  # Fill missing values with 0
         
         # Convert to Eastern Time (US Market)
-        if not processed_df.index.tz:
-            processed_df.index = processed_df.index.tz_localize('UTC').tz_convert('US/Eastern')
+        processed_df.index = processed_df.index.tz_convert('US/Eastern')
         
-        # Remove rows outside market hours (if timestamp information is available)
-        if processed_df.index.time.min() != processed_df.index.time.max():
-            market_hours = (processed_df.index.time >= pd.Timestamp('9:30').time()) & \
-                         (processed_df.index.time <= pd.Timestamp('16:00').time())
-            processed_df = processed_df[market_hours]
+        # Sort index to ensure chronological order
+        processed_df = processed_df.sort_index()
         
         return processed_df
 

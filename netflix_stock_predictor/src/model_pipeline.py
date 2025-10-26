@@ -145,7 +145,7 @@ class ModelPipeline:
         )
         self.scaler = StandardScaler()
         
-    def prepare_features(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
+    def prepare_features(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """
         Prepare features and target variables.
         
@@ -153,13 +153,16 @@ class ModelPipeline:
             df (pd.DataFrame): Input dataframe
             
         Returns:
-            Tuple[pd.DataFrame, pd.Series]: X (features) and y (target)
+            Tuple[pd.DataFrame, pd.DataFrame]: X (features) and y (targets)
         """
         # Engineer features
         features_df = self.feature_engineer.engineer_features(df)
         
-        # Prepare target (next day's opening price)
-        y = features_df['Open'].shift(-1)
+        # Prepare targets (next day's opening and closing prices)
+        y = pd.DataFrame({
+            'Next_Open': features_df['Open'].shift(-1),
+            'Next_Close': features_df['Close'].shift(-1)
+        })
         features_df = features_df.drop(columns=['Open'])  # Remove current day's open
         
         # Remove the last row (has NaN target)
@@ -188,32 +191,55 @@ class ModelPipeline:
         
         return X_train, X_test, y_train, y_test
     
-    def train(self, X_train: pd.DataFrame, y_train: pd.Series):
+    def train(self, X_train: pd.DataFrame, y_train: pd.DataFrame):
         """
-        Train the model.
+        Train the models for opening and closing prices.
         
         Args:
             X_train (pd.DataFrame): Training features
-            y_train (pd.Series): Training target
+            y_train (pd.DataFrame): Training targets (Next_Open and Next_Close)
         """
         # Scale features
         X_train_scaled = self.scaler.fit_transform(X_train)
         
-        # Train model
-        self.model.fit(X_train_scaled, y_train)
+        # Create separate models for open and close predictions
+        self.model_open = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
+        self.model_close = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
         
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        # Train both models
+        self.model_open.fit(X_train_scaled, y_train['Next_Open'])
+        self.model_close.fit(X_train_scaled, y_train['Next_Close'])
+        
+    def predict(self, X: pd.DataFrame) -> pd.DataFrame:
         """
-        Make predictions.
+        Make predictions for both opening and closing prices.
         
         Args:
             X (pd.DataFrame): Features to predict on
             
         Returns:
-            np.ndarray: Predicted values
+            pd.DataFrame: Predicted values for open and close
         """
         X_scaled = self.scaler.transform(X)
-        return self.model.predict(X_scaled)
+        predictions = pd.DataFrame({
+            'Next_Open': self.model_open.predict(X_scaled),
+            'Next_Close': self.model_close.predict(X_scaled)
+        }, index=X.index)
+        return predictions
+        
+    def save_model(self):
+        """Save model artifacts."""
+        self.model_dir.mkdir(parents=True, exist_ok=True)
+        
+        joblib.dump(self.model_open, self.model_dir / 'model_open.joblib')
+        joblib.dump(self.model_close, self.model_dir / 'model_close.joblib')
+        joblib.dump(self.scaler, self.model_dir / 'scaler.joblib')
+        
+    def load_model(self):
+        """Load saved model artifacts."""
+        self.model_open = joblib.load(self.model_dir / 'model_open.joblib')
+        self.model_close = joblib.load(self.model_dir / 'model_close.joblib')
+        self.scaler = joblib.load(self.model_dir / 'scaler.joblib')
     
     def get_feature_importance(self) -> pd.Series:
         """
