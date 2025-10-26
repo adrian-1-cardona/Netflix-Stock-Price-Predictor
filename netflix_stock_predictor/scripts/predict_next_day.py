@@ -96,40 +96,93 @@ def main():
     X, _ = pipeline.prepare_features(processed_data)
     latest_features = X.iloc[-1:]
     
-    # Make predictions
-    predictions = pipeline.predict(latest_features)
-    
-    # Get prediction intervals
-    std_dev = np.std(predictions)
-    lower_bound, upper_bound = get_prediction_intervals(predictions[0], std_dev)
+    # Make predictions with confidence intervals
+    predictions = pipeline.predict_with_confidence(latest_features, confidence_level=0.95)
     
     # Get next trading day
     next_trading_day = get_next_trading_day()
     
     # Print predictions
-    print(f"\nPredictions for {next_trading_day.strftime('%Y-%m-%d')}:")
-    print("-" * 50)
-    print(f"Opening Price: {format_price(predictions[0])}")
-    print(f"95% Confidence Interval: [{format_price(lower_bound)} - {format_price(upper_bound)}]")
+    print(f"\n{'='*60}")
+    print(f"Netflix Stock Price Predictions for {next_trading_day.strftime('%A, %B %d, %Y')}")
+    print(f"{'='*60}\n")
+    
+    # Opening price
+    print(f"Opening Price:  {format_price(predictions['open']['prediction'])}")
+    print(f"  Confidence:   {predictions['open']['confidence']:.1f}%")
+    print(f"  Range:        {format_price(predictions['open']['lower_bound'])} - {format_price(predictions['open']['upper_bound'])}")
+    
+    # High price
+    print(f"\nIntraday High:  {format_price(predictions['high']['prediction'])}")
+    print(f"  Confidence:   {predictions['high']['confidence']:.1f}%")
+    print(f"  Range:        {format_price(predictions['high']['lower_bound'])} - {format_price(predictions['high']['upper_bound'])}")
+    
+    # Closing price
+    print(f"\nClosing Price:  {format_price(predictions['close']['prediction'])}")
+    print(f"  Confidence:   {predictions['close']['confidence']:.1f}%")
+    print(f"  Range:        {format_price(predictions['close']['lower_bound'])} - {format_price(predictions['close']['upper_bound'])}")
+    
+    # Calculate expected price change
+    current_close = processed_data['Close'].iloc[-1]
+    predicted_close = predictions['close']['prediction']
+    price_change = predicted_close - current_close
+    price_change_pct = (price_change / current_close) * 100
+    
+    print(f"\n{'-'*60}")
+    print(f"Current Close:     {format_price(current_close)}")
+    print(f"Expected Change:   {format_price(price_change)} ({price_change_pct:+.2f}%)")
+    
+    # Overall model confidence (average of all three predictions)
+    avg_confidence = (predictions['open']['confidence'] + 
+                     predictions['high']['confidence'] + 
+                     predictions['close']['confidence']) / 3
+    
+    print(f"\nOverall Model Confidence: {avg_confidence:.1f}%")
+    
+    # Interpretation
+    if avg_confidence >= 90:
+        confidence_text = "Very High - Model is very certain about these predictions"
+    elif avg_confidence >= 80:
+        confidence_text = "High - Model shows strong confidence in predictions"
+    elif avg_confidence >= 70:
+        confidence_text = "Moderate - Predictions have reasonable confidence"
+    elif avg_confidence >= 60:
+        confidence_text = "Low - Higher uncertainty in these predictions"
+    else:
+        confidence_text = "Very Low - Exercise caution with these predictions"
+    
+    print(f"Confidence Level: {confidence_text}")
     
     # Print model performance metrics (if available)
     try:
-        X_train, X_test, y_train, y_test = pipeline.train_test_split(X, processed_data['Open'])
+        X_train, X_test, targets_train, targets_test = pipeline.train_test_split(X, processed_data[['Open', 'High', 'Close']].shift(-1)[:-1].to_dict('series'))
         test_predictions = pipeline.predict(X_test)
         
         from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
         
-        rmse = np.sqrt(mean_squared_error(y_test, test_predictions))
-        mae = mean_absolute_error(y_test, test_predictions)
-        r2 = r2_score(y_test, test_predictions)
+        print(f"\n{'='*60}")
+        print("Model Performance Metrics (Test Set)")
+        print(f"{'='*60}")
         
-        print("\nModel Performance Metrics:")
-        print("-" * 50)
-        print(f"RMSE: {rmse:.2f}")
-        print(f"MAE: {mae:.2f}")
-        print(f"R²: {r2:.3f}")
+        for target in ['open', 'high', 'close']:
+            # Only use matching indices
+            common_idx = targets_test[target].index.intersection(pd.Index(range(len(test_predictions[target]))))
+            y_true = targets_test[target].loc[common_idx]
+            y_pred = test_predictions[target][:len(common_idx)]
+            
+            rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+            mae = mean_absolute_error(y_true, y_pred)
+            r2 = r2_score(y_true, y_pred)
+            
+            print(f"\n{target.upper()} Price:")
+            print(f"  RMSE: ${rmse:.2f}")
+            print(f"  MAE:  ${mae:.2f}")
+            print(f"  R²:   {r2:.3f}")
+        
+        print(f"\n{'='*60}\n")
     except Exception as e:
-        print("\nNote: Could not calculate performance metrics:", str(e))
+        print(f"\n{'='*60}\n")
+        print(f"Note: Could not calculate performance metrics: {str(e)}\n")
 
 if __name__ == '__main__':
     main()

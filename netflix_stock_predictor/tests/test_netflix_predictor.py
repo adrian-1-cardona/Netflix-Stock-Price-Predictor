@@ -85,40 +85,49 @@ class TestModelPipeline(unittest.TestCase):
         self.model_dir = Path(__file__).resolve().parent.parent / 'models'
         self.pipeline = ModelPipeline(str(self.model_dir))
         
-        # Create sample data
-        dates = pd.date_range('2025-01-01', '2025-01-30')
+        # Create sample data with all required columns (need more rows for feature engineering)
+        dates = pd.date_range('2025-01-01', '2025-06-30')  # 6 months of data
         self.sample_data = pd.DataFrame({
             'Open': np.random.uniform(100, 200, len(dates)),
+            'High': np.random.uniform(100, 200, len(dates)),
+            'Low': np.random.uniform(100, 200, len(dates)),
             'Close': np.random.uniform(100, 200, len(dates)),
             'Volume': np.random.uniform(1000, 2000, len(dates))
         }, index=dates)
         
     def test_prepare_features(self):
         """Test feature preparation."""
-        X, y = self.pipeline.prepare_features(self.sample_data)
+        X, targets = self.pipeline.prepare_features(self.sample_data)
         
         self.assertIsInstance(X, pd.DataFrame)
-        self.assertIsInstance(y, pd.Series)
-        self.assertEqual(len(X), len(y))
+        self.assertIsInstance(targets, dict)
+        self.assertIn('open', targets)
+        self.assertIn('high', targets)
+        self.assertIn('close', targets)
+        self.assertEqual(len(X), len(targets['open']))
         
     def test_train_test_split(self):
         """Test data splitting."""
-        X, y = self.pipeline.prepare_features(self.sample_data)
-        X_train, X_test, y_train, y_test = self.pipeline.train_test_split(X, y, test_size=0.2)
+        X, targets = self.pipeline.prepare_features(self.sample_data)
+        X_train, X_test, targets_train, targets_test = self.pipeline.train_test_split(X, targets, test_size=0.2)
         
         self.assertTrue(len(X_train) > len(X_test))
         self.assertEqual(len(X_train) + len(X_test), len(X))
         
     def test_model_training(self):
         """Test model training and prediction."""
-        X, y = self.pipeline.prepare_features(self.sample_data)
-        X_train, X_test, y_train, y_test = self.pipeline.train_test_split(X, y)
+        X, targets = self.pipeline.prepare_features(self.sample_data)
+        X_train, X_test, targets_train, targets_test = self.pipeline.train_test_split(X, targets)
         
-        self.pipeline.train(X_train, y_train)
+        self.pipeline.train(X_train, targets_train)
         predictions = self.pipeline.predict(X_test)
         
-        self.assertEqual(len(predictions), len(X_test))
-        self.assertTrue(all(isinstance(pred, (float, np.float64)) for pred in predictions))
+        self.assertIsInstance(predictions, dict)
+        self.assertIn('open', predictions)
+        self.assertIn('high', predictions)
+        self.assertIn('close', predictions)
+        self.assertEqual(len(predictions['open']), len(X_test))
+        self.assertTrue(all(isinstance(pred, (float, np.float64)) for pred in predictions['open']))
 
 if __name__ == '__main__':
     unittest.main()
