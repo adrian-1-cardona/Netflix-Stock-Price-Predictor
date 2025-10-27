@@ -540,16 +540,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- Netflix for providing fascinating stock price data
+- Netflix for providing fascinating stock price data through Kaggle (still looking for authors name )
 - scikit-learn for excellent machine learning tools
 - The open-source community for inspiration
 
 ---
-
-
-
-<<<<<<< HEAD
-**⚠️ Disclaimer**: This project is for educational purposes only. Stock predictions are inherently uncertain. Do not use these predictions for actual trading decisions without proper financial advice.
-=======
-**⚠️ Disclaimer**: This project is for educational purposes only. Stock predictions are inherently uncertain. Do not use these predictions for actual trading decisions without proper financial advice.
->>>>>>> 617c9cf458ed63d50256fa9d43456b4119e36e7c
